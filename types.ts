@@ -1,4 +1,6 @@
 
+export type Department = 'Cardiology' | 'Neurology' | 'Oncology' | 'Pediatrics' | 'ICU' | 'Orthopedics' | 'General Surgery';
+
 export interface Patient {
   id: string;
   name: string;
@@ -6,31 +8,45 @@ export interface Patient {
   gender: 'Male' | 'Female' | 'Other';
   bloodType: string;
   admissionDate: string;
-  department: string;
+  dischargeDate?: string;
+  diagnosis?: string;
+  department: Department;
   bedNumber: string;
   status: 'Stable' | 'Critical' | 'Discharged';
-  timeline?: TimelineEvent[];
   vitals?: {
     heartRate: number[];
+    bloodPressure: string[];
     spO2: number[];
+    temperature: number[];
   };
+  timeline?: TimelineEvent[];
+  imagingStudies?: ImagingStudy[];
 }
 
 export interface Appointment {
-  id: string;
-  patientName: string;
-  doctorName: string;
-  date: string;
-  time: string;
-  type: 'Consultation' | 'Follow-up' | 'Check-up';
-  status: 'Scheduled' | 'Completed' | 'Canceled';
+    id: string;
+    patientName: string;
+    doctorName: string;
+    date: string;
+    time: string;
+    type: 'Consultation' | 'Follow-up' | 'Check-up';
+    status: 'Scheduled' | 'Completed' | 'Canceled';
+}
+
+export interface Invoice {
+    id: string;
+    patientId: string;
+    patientName: string;
+    date: string;
+    amount: number;
+    status: 'Paid' | 'Pending' | 'Overdue';
 }
 
 export interface Staff {
     id: string;
     name: string;
-    role: 'Doctor' | 'Nurse' | 'Surgeon' | 'Admin';
-    department: string;
+    role: 'Doctor' | 'Nurse' | 'Surgeon' | 'Admin' | 'Technician';
+    department: Department;
     onCall: boolean;
     phone: string;
     email: string;
@@ -54,7 +70,15 @@ export interface Surgery {
     startTime: string;
     endTime: string;
     operatingRoom: 'OR 1' | 'OR 2' | 'OR 3' | 'OR 4';
-    status: 'Scheduled' | 'In Progress' | 'Completed';
+    status: 'Scheduled' | 'In Progress' | 'Completed' | 'Canceled';
+}
+
+export interface Medication {
+    id: string;
+    name: string;
+    dosage: string;
+    frequency: string;
+    stock: number;
 }
 
 export interface LabResult {
@@ -68,60 +92,21 @@ export interface LabResult {
     status: 'Pending' | 'Completed';
 }
 
-export interface Invoice {
+export interface ImagingStudy {
     id: string;
-    patientId: string;
     patientName: string;
+    studyType: string; // e.g., 'X-Ray', 'MRI'
+    bodyPart: string;
     date: string;
-    amount: number;
-    status: 'Paid' | 'Pending' | 'Overdue';
-}
-
-export interface Bed {
-    id: string;
-    ward: string;
-    isOccupied: boolean;
-    patientName?: string;
+    imageUrl: string;
 }
 
 export interface TimelineEvent {
     id: string;
     date: string;
-    type: 'Admission' | 'Observation' | 'Procedure' | 'Discharge';
+    type: 'Admission' | 'Diagnosis' | 'Procedure' | 'Medication' | 'Discharge' | 'Observation';
     title: string;
     description: string;
-}
-
-export interface ImagingStudy {
-  id: string;
-  patientName: string;
-  studyType: string;
-  bodyPart: string;
-  date: string;
-  imageUrl: string;
-}
-
-export interface Resource {
-    id: string;
-    name: string;
-    type: 'MRI Machine' | 'Ventilator' | 'X-Ray';
-    isAvailable: boolean;
-}
-
-export interface AuditLogEntry {
-    id: string;
-    timestamp: string;
-    user: string;
-    action: string;
-    details: string;
-}
-
-export interface Medication {
-    id: string;
-    name: string;
-    dosage: string;
-    frequency: string;
-    stock: number;
 }
 
 export interface GenomicVariant {
@@ -129,5 +114,20 @@ export interface GenomicVariant {
     gene: string;
     variant: string;
     implication: string;
-    classification: 'Benign' | 'Likely Benign' | 'Uncertain' | 'Likely Pathogenic' | 'Pathogenic';
+    classification: 'Pathogenic' | 'Likely Pathogenic' | 'Uncertain' | 'Likely Benign' | 'Benign';
+}
+
+export interface Resource {
+    id: string;
+    name: string;
+    type: 'MRI Machine' | 'Ventilator' | 'X-Ray' | 'Ultrasound';
+    isAvailable: boolean;
+}
+
+export interface AuditLog {
+    id: string;
+    timestamp: string;
+    user: string;
+    action: string;
+    details: string;
 }

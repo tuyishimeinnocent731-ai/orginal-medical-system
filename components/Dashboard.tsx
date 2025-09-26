@@ -4,6 +4,7 @@ import StatCard from './StatCard.tsx';
 import PatientAdmissionsChart from './PatientAdmissionsChart.tsx';
 import DepartmentOccupancyChart from './DepartmentOccupancyChart.tsx';
 import LiveVitalsMonitor from './LiveVitalsMonitor.tsx';
+// FIX: Added file extension to the import of IconComponents to resolve module error.
 import { PatientsIcon } from './IconComponents.tsx';
 
 const Dashboard: React.FC = () => {

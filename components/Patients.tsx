@@ -18,9 +18,9 @@ const Patients: React.FC = () => {
         }
     };
     
-    const handleSavePatient = (patientData: Omit<Patient, 'id'>) => {
+    const handleSavePatient = (formData: Omit<Patient, 'id'>) => {
         const newPatient: Patient = {
-            ...patientData,
+            ...formData,
             id: `P${(Math.random() * 1000).toFixed(0).padStart(3, '0')}`,
         };
         setPatients(prev => [newPatient, ...prev]);
@@ -28,7 +28,7 @@ const Patients: React.FC = () => {
 
     return (
         <div className="space-y-6">
-             <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center">
                 <h1 className="text-3xl font-bold">Patients</h1>
                 <button onClick={() => setIsFormOpen(true)} className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Add Patient</button>
             </div>
@@ -41,12 +41,15 @@ const Patients: React.FC = () => {
                             <th className="p-3">Department</th>
                             <th className="p-3">Bed</th>
                             <th className="p-3">Status</th>
-                            <th className="p-3">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {patients.map(patient => (
-                            <tr key={patient.id} className="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                            <tr 
+                                key={patient.id} 
+                                className="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50 cursor-pointer"
+                                onClick={() => setSelectedPatient(patient)}
+                            >
                                 <td className="p-3 font-medium">{patient.name}</td>
                                 <td className="p-3">{patient.age}</td>
                                 <td className="p-3">{patient.department}</td>
@@ -55,9 +58,6 @@ const Patients: React.FC = () => {
                                     <span className={`px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(patient.status)}`}>
                                         {patient.status}
                                     </span>
-                                </td>
-                                <td className="p-3">
-                                    <button onClick={() => setSelectedPatient(patient)} className="text-blue-600 hover:underline">View Details</button>
                                 </td>
                             </tr>
                         ))}
