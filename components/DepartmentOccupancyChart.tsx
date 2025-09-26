@@ -1,4 +1,5 @@
 
+
 import React from 'react';
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 // FIX: Created mockData.ts to provide the mock patient data.
@@ -36,7 +37,7 @@ const DepartmentOccupancyChart: React.FC = () => {
                         fill="#8884d8"
                         dataKey="value"
                         nameKey="name"
-                        // FIX: The 'percent' property can be undefined. Coalesced to 0 to prevent a TypeError during arithmetic operations.
+                        // FIX: The 'percent' property can be undefined, so we must provide a default value to avoid a TypeError during an arithmetic operation.
                         label={({ name, percent }) => `${name} ${((percent ?? 0) * 100).toFixed(0)}%`}
                     >
                         {data.map((entry, index) => (

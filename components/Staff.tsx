@@ -1,62 +1,42 @@
 // FIX: Created this file to define the Staff component.
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { mockStaff } from '../services/mockData.ts';
 import type { Staff } from '../types.ts';
+import StaffFormModal from './StaffFormModal.tsx';
 
 const Staff: React.FC = () => {
-  const [staff] = useState<Staff[]>(mockStaff);
-  const [searchTerm, setSearchTerm] = useState('');
+    const [staff, setStaff] = useState<Staff[]>(mockStaff);
+    const [isFormOpen, setIsFormOpen] = useState(false);
 
-  const filteredStaff = useMemo(() => {
-    return staff.filter(s =>
-      s.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      s.role.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      s.department.toLowerCase().includes(searchTerm.toLowerCase())
+    const handleSaveStaff = (formData: Omit<Staff, 'id'>) => {
+        const newStaff: Staff = {
+            ...formData,
+            id: `S${(Math.random() * 1000).toFixed(0).padStart(3, '0')}`,
+        };
+        setStaff(prev => [newStaff, ...prev]);
+    };
+
+    return (
+        <div className="space-y-6">
+            <div className="flex justify-end">
+                <button onClick={() => setIsFormOpen(true)} className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Add Staff</button>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {staff.map(member => (
+                    <div key={member.id} className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md">
+                        <h3 className="text-xl font-bold">{member.name}</h3>
+                        <p className="text-blue-500">{member.role}</p>
+                        <p className="text-gray-500 dark:text-gray-400">{member.department}</p>
+                        <div className="mt-4 pt-4 border-t dark:border-gray-700">
+                             <p className="text-sm"><strong>Status:</strong> {member.onCall ? 'On Call' : 'Off Duty'}</p>
+                             <p className="text-sm"><strong>Contact:</strong> {member.email}</p>
+                        </div>
+                    </div>
+                ))}
+            </div>
+            {isFormOpen && <StaffFormModal onClose={() => setIsFormOpen(false)} onSave={handleSaveStaff} />}
+        </div>
     );
-  }, [staff, searchTerm]);
-
-  return (
-    <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold">Hospital Staff</h2>
-        <input
-          type="text"
-          placeholder="Search staff..."
-          value={searchTerm}
-          onChange={e => setSearchTerm(e.target.value)}
-          className="w-64 p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
-        />
-      </div>
-      <div className="overflow-x-auto">
-        <table className="w-full text-left">
-          <thead className="border-b dark:border-gray-700">
-            <tr>
-              <th className="p-3">Name</th>
-              <th className="p-3">Role</th>
-              <th className="p-3">Department</th>
-              <th className="p-3">Shift</th>
-              <th className="p-3">On Call</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredStaff.map(member => (
-              <tr key={member.id} className="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                <td className="p-3 font-medium">{member.name}</td>
-                <td className="p-3">{member.role}</td>
-                <td className="p-3">{member.department}</td>
-                <td className="p-3">{member.shift}</td>
-                <td className="p-3">
-                  <span className={`px-2 py-1 rounded-full text-xs font-semibold ${member.onCall ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'} dark:bg-opacity-20`}>
-                    {member.onCall ? 'Yes' : 'No'}
-                  </span>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  );
 };
 
 export default Staff;
