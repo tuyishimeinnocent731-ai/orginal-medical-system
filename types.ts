@@ -1,23 +1,25 @@
-// FIX: Created this file to define all application types.
-
-export type View =
-  | 'dashboard'
-  | 'patients'
+// FIX: Created a central types file to define all data structures used throughout the application, such as Patient, Staff, and View.
+export type View = 
+  | 'dashboard' 
+  | 'patients' 
   | 'patient-detail'
-  | 'staff'
+  | 'appointments' 
+  | 'billing' 
+  | 'staff' 
   | 'staff-detail'
-  | 'appointments'
   | 'symptom-checker'
   | 'telemedicine'
-  | 'billing'
+  | 'surgical-schedule'
   | 'pharmacy'
   | 'laboratory'
-  | 'surgical-schedule'
   | 'hospital-map'
   | 'department-detail'
   | 'patient-portal'
   | 'virtual-consultations'
-  | 'consultation-room';
+  | 'consultation-room'
+  | 'genomics'
+  | 'genomic-detail'
+  | 'wearable-data';
 
 export type Department = 'Cardiology' | 'Neurology' | 'Orthopedics' | 'ICU' | 'Oncology' | 'General Medicine';
 
@@ -36,10 +38,8 @@ export interface Patient {
     bloodPressure: string[];
   };
   timeline?: TimelineEvent[];
-  medicalHistory?: string[];
-  currentMedications?: Medication[];
-  labResults?: LabResult[];
-  imagingResults?: ImagingResult[];
+  imagingStudies?: ImagingStudy[];
+  hasGenomicData?: boolean;
 }
 
 export interface Staff {
@@ -47,7 +47,7 @@ export interface Staff {
   name: string;
   role: string;
   department: Department;
-  avatarUrl: string;
+  avatarUrl:string;
   onCall: boolean;
   assignedPatients?: string[];
 }
@@ -62,12 +62,6 @@ export interface Appointment {
   status: 'Scheduled' | 'Completed' | 'Cancelled';
 }
 
-export interface SymptomAnalysisResult {
-  possibleConditions: { name: string; explanation: string }[];
-  suggestedNextSteps: string[];
-  disclaimer: string;
-}
-
 export interface Invoice {
   id: string;
   patientName: string;
@@ -75,7 +69,23 @@ export interface Invoice {
   date: string;
   amount: number;
   status: 'Paid' | 'Pending' | 'Overdue';
-  items: { description: string; amount: number }[];
+}
+
+export interface SymptomAnalysisResult {
+  possibleConditions: {
+    name: string;
+    explanation: string;
+  }[];
+  suggestedNextSteps: string[];
+  disclaimer: string;
+}
+
+export interface Notification {
+    id: string;
+    message: string;
+    timestamp: string;
+    type: 'message' | 'alert' | 'billing' | 'surgery';
+    read: boolean;
 }
 
 export interface ChatContact {
@@ -84,7 +94,6 @@ export interface ChatContact {
     avatarUrl: string;
     lastMessage: string;
     unreadCount: number;
-    online?: boolean;
 }
 
 export interface ChatMessage {
@@ -92,33 +101,6 @@ export interface ChatMessage {
     text: string;
     sender: 'user' | 'doctor';
     timestamp: string;
-}
-
-export interface Notification {
-    id: string;
-    type: 'message' | 'surgery' | 'billing' | 'alert';
-    message: string;
-    timestamp: string;
-    read: boolean;
-}
-
-export interface Medication {
-    id: string;
-    name: string;
-    dosage: string;
-    frequency: string;
-    status: 'Active' | 'Discontinued';
-}
-
-export interface LabResult {
-    id: string;
-    testName: string;
-    patientName: string;
-    patientId: string;
-    value: string;
-    referenceRange: string;
-    date: string;
-    status: 'Normal' | 'Abnormal' | 'Pending';
 }
 
 export interface Surgery {
@@ -137,36 +119,58 @@ export interface Surgery {
 export interface TimelineEvent {
     id: string;
     date: string;
-    type: 'Admission' | 'Discharge' | 'Procedure' | 'Medication' | 'Observation';
     title: string;
     description: string;
-}
-
-export interface ImagingResult {
-    id: string;
-    type: 'X-Ray' | 'MRI' | 'CT Scan';
-    date: string;
-    imageUrl: string;
-    notes: string;
+    type: 'Admission' | 'Discharge' | 'Procedure' | 'Medication' | 'Test';
 }
 
 export interface Prescription {
     id: string;
+    patientName: string;
+    patientId: string;
     medicationName: string;
     dosage: string;
     frequency: string;
     duration: string;
+    issueDate: string;
+    status: 'Active' | 'Completed' | 'Cancelled';
+}
+
+export interface LabResult {
+    id: string;
     patientName: string;
     patientId: string;
-    issueDate: string;
-    status: 'Active' | 'Completed';
+    testName: string;
+    result: string;
+    referenceRange: string;
+    date: string;
+    status: 'Pending' | 'Completed' | 'Abnormal';
+}
+
+export interface ImagingStudy {
+    id: string;
+    patientName: string;
+    patientId: string;
+    studyType: 'X-Ray' | 'MRI' | 'CT Scan';
+    bodyPart: string;
+    date: string;
+    imageUrl: string;
+    thumbnailUrl: string;
 }
 
 export interface VirtualConsultation {
-    id: string;
-    patientName: string;
-    doctorName: string;
-    date: string;
-    time: string;
-    status: 'Scheduled' | 'Completed' | 'Cancelled';
+  id: string;
+  patientName: string;
+  doctorName: string;
+  date: string;
+  time: string;
+  status: 'Scheduled' | 'Completed' | 'Cancelled';
+}
+
+export interface GenomicVariant {
+  id: string;
+  gene: string;
+  variant: string;
+  classification: 'Pathogenic' | 'Likely Pathogenic' | 'Benign' | 'Uncertain Significance';
+  implication: string;
 }

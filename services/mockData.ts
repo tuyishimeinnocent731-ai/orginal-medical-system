@@ -1,5 +1,5 @@
-// FIX: Created this file to provide mock data for the application.
-import type { Patient, Staff, Appointment, Invoice, ChatContact, ChatMessage, Notification, LabResult, Surgery, Medication, Prescription, VirtualConsultation } from '../types';
+// FIX: Created a comprehensive mock data file to simulate a backend, providing realistic data for patients, staff, appointments, and other entities.
+import type { Patient, Staff, Appointment, Invoice, Notification, ChatContact, ChatMessage, Surgery, Prescription, LabResult, ImagingStudy, VirtualConsultation, GenomicVariant } from '../types';
 
 export const mockPatients: Patient[] = [
   {
@@ -12,211 +12,177 @@ export const mockPatients: Patient[] = [
     lastVisit: '2023-10-15',
     status: 'Stable',
     vitals: {
-      heartRate: [72, 75, 74, 76, 73],
-      spO2: [98, 99, 98, 97, 98],
-      bloodPressure: ['120/80', '122/81', '121/79', '123/82', '120/80'],
+      heartRate: [72, 75, 73, 76, 74],
+      spO2: [98, 99, 97, 98, 99],
+      bloodPressure: ['120/80', '122/81', '121/79', '123/80', '120/80'],
     },
     timeline: [
-        { id: 'T001', date: '2023-10-12', type: 'Admission', title: 'Admitted to Cardiology', description: 'Patient admitted with chest pain.' },
-        { id: 'T002', date: '2023-10-13', type: 'Procedure', title: 'Angiogram', description: 'Coronary angiogram performed, showed minor blockage.'},
-        { id: 'T003', date: '2023-10-14', type: 'Medication', title: 'Started on Aspirin', description: 'Prescribed 81mg daily aspirin.'}
+        { id: 'T001', date: '2023-10-15', title: 'Admitted', description: 'Admitted for chest pain.', type: 'Admission' },
+        { id: 'T002', date: '2023-10-16', title: 'Angiogram', description: 'Coronary angiogram performed.', type: 'Procedure' },
+        { id: 'T003', date: '2023-10-17', title: 'Medication Update', description: 'Started on beta-blockers.', type: 'Medication' },
     ],
-    medicalHistory: ['Hypertension', 'High Cholesterol'],
-    currentMedications: [{id: 'M001', name: 'Aspirin', dosage: '81mg', frequency: 'Once Daily', status: 'Active'}],
-    labResults: [{ id: 'L001', testName: 'Troponin I', patientName: 'John Doe', patientId: 'P001', value: '0.01 ng/mL', referenceRange: '< 0.04 ng/mL', date: '2023-10-12', status: 'Normal' }],
-    imagingResults: [{ id: 'I001', type: 'X-Ray', date: '2023-10-12', imageUrl: 'https://placehold.co/600x400/000000/FFFFFF/png?text=Chest+X-Ray', notes: 'Lungs are clear.' }]
+    imagingStudies: [
+      { id: 'IMG001', patientId: 'P001', patientName: 'John Doe', studyType: 'X-Ray', bodyPart: 'Chest', date: '2023-10-15', imageUrl: '/images/xray.jpg', thumbnailUrl: '/images/xray-thumb.jpg' },
+      { id: 'IMG002', patientId: 'P001', patientName: 'John Doe', studyType: 'CT Scan', bodyPart: 'Head', date: '2023-10-16', imageUrl: '/images/ct.jpg', thumbnailUrl: '/images/ct-thumb.jpg' },
+    ],
+    hasGenomicData: true,
   },
   {
     id: 'P002',
     name: 'Jane Smith',
-    age: 62,
+    age: 32,
     gender: 'Female',
     avatarUrl: 'https://i.pravatar.cc/150?u=P002',
     department: 'Neurology',
-    lastVisit: '2023-09-20',
+    lastVisit: '2023-11-01',
     status: 'Critical',
     vitals: {
-      heartRate: [88, 92, 90, 95, 93],
-      spO2: [95, 94, 95, 93, 94],
-      bloodPressure: ['140/90', '145/92', '142/88', '148/95', '144/90'],
+      heartRate: [110, 112, 109, 115, 113],
+      spO2: [92, 93, 91, 92, 94],
+      bloodPressure: ['140/90', '142/91', '139/89', '145/92', '141/90'],
     },
   },
   {
     id: 'P003',
-    name: 'Robert Brown',
-    age: 78,
+    name: 'Robert Johnson',
+    age: 68,
     gender: 'Male',
     avatarUrl: 'https://i.pravatar.cc/150?u=P003',
     department: 'Orthopedics',
-    lastVisit: '2023-11-01',
+    lastVisit: '2023-09-20',
     status: 'Stable',
   },
   {
     id: 'P004',
-    name: 'Emily White',
-    age: 34,
+    name: 'Emily Williams',
+    age: 25,
     gender: 'Female',
     avatarUrl: 'https://i.pravatar.cc/150?u=P004',
     department: 'General Medicine',
-    lastVisit: '2023-10-28',
+    lastVisit: '2023-11-05',
     status: 'Discharged',
   },
   {
     id: 'P005',
-    name: 'Michael Green',
+    name: 'Michael Brown',
     age: 55,
     gender: 'Male',
     avatarUrl: 'https://i.pravatar.cc/150?u=P005',
-    department: 'ICU',
-    lastVisit: '2023-11-05',
-    status: 'Critical',
-    vitals: {
-      heartRate: [110, 115, 112, 118, 114],
-      spO2: [92, 91, 93, 90, 92],
-      bloodPressure: ['100/60', '98/58', '102/62', '95/55', '100/60'],
-    },
-  },
-   {
-    id: 'P006',
-    name: 'Olivia Martinez',
-    age: 41,
-    gender: 'Female',
-    avatarUrl: 'https://i.pravatar.cc/150?u=P006',
     department: 'Oncology',
-    lastVisit: '2023-11-02',
+    lastVisit: '2023-11-10',
     status: 'Stable',
   },
   {
+    id: 'P006',
+    name: 'Jessica Davis',
+    age: 71,
+    gender: 'Female',
+    avatarUrl: 'https://i.pravatar.cc/150?u=P006',
+    department: 'ICU',
+    lastVisit: '2023-11-12',
+    status: 'Critical',
+    vitals: {
+      heartRate: [120, 125, 122, 128, 124],
+      spO2: [90, 89, 91, 88, 90],
+      bloodPressure: ['90/60', '92/61', '88/59', '95/62', '91/60'],
+    },
+  },
+  {
     id: 'P007',
-    name: 'David Wilson',
-    age: 68,
+    name: 'Chris Miller',
+    age: 42,
     gender: 'Male',
     avatarUrl: 'https://i.pravatar.cc/150?u=P007',
     department: 'Cardiology',
-    lastVisit: '2023-10-30',
+    lastVisit: '2023-11-11',
     status: 'Stable',
   },
   {
     id: 'P008',
-    name: 'Sophia Anderson',
-    age: 29,
+    name: 'Patricia Wilson',
+    age: 58,
     gender: 'Female',
     avatarUrl: 'https://i.pravatar.cc/150?u=P008',
-    department: 'General Medicine',
-    lastVisit: '2023-11-04',
+    department: 'Oncology',
+    lastVisit: '2023-11-09',
     status: 'Stable',
-  },
+  }
 ];
 
 export const mockStaff: Staff[] = [
-  {
-    id: 'S001',
-    name: 'Dr. Alice Carter',
-    role: 'Cardiologist',
-    department: 'Cardiology',
-    avatarUrl: 'https://i.pravatar.cc/150?u=S001',
-    onCall: true,
-    assignedPatients: ['P001', 'P007'],
-  },
-  {
-    id: 'S002',
-    name: 'Dr. Ben Davis',
-    role: 'Neurologist',
-    department: 'Neurology',
-    avatarUrl: 'https://i.pravatar.cc/150?u=S002',
-    onCall: false,
-     assignedPatients: ['P002'],
-  },
-  {
-    id: 'S003',
-    name: 'Nurse Carol White',
-    role: 'Head Nurse',
-    department: 'ICU',
-    avatarUrl: 'https://i.pravatar.cc/150?u=S003',
-    onCall: true,
-  },
-  {
-    id: 'S004',
-    name: 'Dr. Frank Miller',
-    role: 'Orthopedic Surgeon',
-    department: 'Orthopedics',
-    avatarUrl: 'https://i.pravatar.cc/150?u=S004',
-    onCall: false,
-    assignedPatients: ['P003'],
-  },
+  { id: 'S001', name: 'Dr. Alice Carter', role: 'Cardiologist', department: 'Cardiology', avatarUrl: 'https://i.pravatar.cc/150?u=S001', onCall: true, assignedPatients: ['P001', 'P007'] },
+  { id: 'S002', name: 'Dr. Ben Davis', role: 'Neurologist', department: 'Neurology', avatarUrl: 'https://i.pravatar.cc/150?u=S002', onCall: false, assignedPatients: ['P002'] },
+  { id: 'S003', name: 'Nurse Carol White', role: 'Head Nurse', department: 'ICU', avatarUrl: 'https://i.pravatar.cc/150?u=S003', onCall: true, assignedPatients: ['P006'] },
+  { id: 'S004', name: 'Dr. David Evans', role: 'Orthopedic Surgeon', department: 'Orthopedics', avatarUrl: 'https://i.pravatar.cc/150?u=S004', onCall: false, assignedPatients: ['P003'] },
+  { id: 'S005', name: 'Dr. Frank Green', role: 'Oncologist', department: 'Oncology', avatarUrl: 'https://i.pravatar.cc/150?u=S005', onCall: true, assignedPatients: ['P005', 'P008'] },
+  { id: 'S006', name: 'Nurse Grace Hall', role: 'Registered Nurse', department: 'General Medicine', avatarUrl: 'https://i.pravatar.cc/150?u=S006', onCall: false },
 ];
 
 export const mockAppointments: Appointment[] = [
-  { id: 'A001', patientName: 'John Doe', doctor: 'Dr. Alice Carter', department: 'Cardiology', date: '2023-11-15', time: '10:00 AM', status: 'Scheduled' },
-  { id: 'A002', patientName: 'Sarah Johnson', doctor: 'Dr. Ben Davis', department: 'Neurology', date: '2023-11-16', time: '11:30 AM', status: 'Scheduled' },
-  { id: 'A003', patientName: 'Emily White', doctor: 'Dr. Primary Care', department: 'General Medicine', date: '2023-10-28', time: '09:00 AM', status: 'Completed' },
-  { id: 'A004', patientName: 'Robert Brown', doctor: 'Dr. Frank Miller', department: 'Orthopedics', date: '2023-11-01', time: '02:00 PM', status: 'Completed' },
-  { id: 'A005', patientName: 'Kevin Harris', doctor: 'Dr. Alice Carter', department: 'Cardiology', date: '2023-11-10', time: '01:00 PM', status: 'Cancelled' },
+  { id: 'A001', patientName: 'John Doe', doctor: 'Dr. Alice Carter', department: 'Cardiology', date: '2023-11-20', time: '10:00 AM', status: 'Scheduled' },
+  { id: 'A002', patientName: 'Emily Williams', doctor: 'Dr. Frank Green', department: 'General Medicine', date: '2023-11-05', time: '02:30 PM', status: 'Completed' },
+  { id: 'A003', patientName: 'Robert Johnson', doctor: 'Dr. David Evans', department: 'Orthopedics', date: '2023-11-22', time: '11:00 AM', status: 'Scheduled' },
+  { id: 'A004', patientName: 'Michael Brown', doctor: 'Dr. Frank Green', department: 'Oncology', date: '2023-11-15', time: '09:00 AM', status: 'Cancelled' },
 ];
 
 export const mockInvoices: Invoice[] = [
-    { id: 'INV001', patientName: 'John Doe', patientId: 'P001', date: '2023-10-20', amount: 1250.75, status: 'Paid', items: [{description: 'Cardiology Consultation', amount: 300}, {description: 'EKG Test', amount: 150.75}, {description: 'Hospital Stay (2 nights)', amount: 800}] },
-    { id: 'INV002', patientName: 'Jane Smith', patientId: 'P002', date: '2023-09-25', amount: 3400.00, status: 'Pending', items: [{description: 'Neurology Consultation', amount: 400}, {description: 'MRI Scan', amount: 3000}] },
-    { id: 'INV003', patientName: 'Emily White', patientId: 'P004', date: '2023-11-01', amount: 150.00, status: 'Overdue', items: [{description: 'General Check-up', amount: 150}] },
+  { id: 'INV001', patientName: 'John Doe', patientId: 'P001', date: '2023-10-20', amount: 1250.75, status: 'Paid' },
+  { id: 'INV002', patientName: 'Jane Smith', patientId: 'P002', date: '2023-11-05', amount: 3400.00, status: 'Pending' },
+  { id: 'INV003', patientName: 'Robert Johnson', patientId: 'P003', date: '2023-09-25', amount: 850.00, status: 'Overdue' },
+  { id: 'INV004', patientName: 'Michael Brown', patientId: 'P005', date: '2023-11-12', amount: 5500.50, status: 'Pending' },
+];
+
+export const mockNotifications: Notification[] = [
+    { id: 'N001', message: 'New message from Dr. Alice Carter regarding John Doe.', type: 'message', timestamp: '5m ago', read: false },
+    { id: 'N002', message: 'Patient P002 vitals are critical.', type: 'alert', timestamp: '1h ago', read: false },
+    { id: 'N003', message: 'Invoice #INV003 is overdue.', type: 'billing', timestamp: '2d ago', read: true },
+    { id: 'N004', message: 'Surgery for Robert Johnson scheduled for tomorrow.', type: 'surgery', timestamp: '1d ago', read: false },
 ];
 
 export const mockChatContacts: ChatContact[] = [
-    { id: 'S001', name: 'Dr. Alice Carter', avatarUrl: 'https://i.pravatar.cc/150?u=S001', lastMessage: 'Please check the latest lab results.', unreadCount: 2, online: true },
-    { id: 'S002', name: 'Dr. Ben Davis', avatarUrl: 'https://i.pravatar.cc/150?u=S002', lastMessage: 'The patient is responding well to treatment.', unreadCount: 0, online: true },
-    { id: 'S003', name: 'Nurse Carol White', avatarUrl: 'https://i.pravatar.cc/150?u=S003', lastMessage: 'Okay, I will.', unreadCount: 0, online: false },
+    { id: 'S001', name: 'Dr. Alice Carter', avatarUrl: 'https://i.pravatar.cc/150?u=S001', lastMessage: "Let's discuss the new test results.", unreadCount: 1 },
+    { id: 'S002', name: 'Dr. Ben Davis', avatarUrl: 'https://i.pravatar.cc/150?u=S002', lastMessage: 'Okay, I will check on them.', unreadCount: 0 },
+    { id: 'S003', name: 'Nurse Carol White', avatarUrl: 'https://i.pravatar.cc/150?u=S003', lastMessage: "Patient in room 3 needs assistance.", unreadCount: 0 },
 ];
 
 export const mockMessages: Record<string, ChatMessage[]> = {
     'S001': [
-        { id: 'm1', text: 'Hi Dr. Carter, how are the new EKG readings for John Doe?', sender: 'user', timestamp: '10:30 AM' },
-        { id: 'm2', text: 'They look stable. No significant changes from yesterday.', sender: 'doctor', timestamp: '10:32 AM' },
-        { id: 'm3', text: 'Please check the latest lab results.', sender: 'doctor', timestamp: '10:32 AM' },
+        { id: 'm1', text: 'Hi, can we review the latest ECG for John Doe?', sender: 'user', timestamp: '10:30 AM' },
+        { id: 'm2', text: "Of course. I'm looking at it now. Everything seems stable.", sender: 'doctor', timestamp: '10:32 AM' },
     ],
     'S002': [
-        { id: 'm4', text: 'Dr. Davis, an update on Jane Smith?', sender: 'user', timestamp: '09:15 AM' },
-        { id: 'm5', text: 'The patient is responding well to treatment.', sender: 'doctor', timestamp: '09:20 AM' },
+        { id: 'm3', text: "Morning Dr. Davis. How is Jane Smith's condition?", sender: 'user', timestamp: '09:00 AM' },
+        { id: 'm4', text: 'Still critical, but we are managing it. No significant changes overnight.', sender: 'doctor', timestamp: '09:05 AM' },
+        { id: 'm5', text: 'Okay, I will check on them.', sender: 'user', timestamp: '09:06 AM' },
     ],
-    'S003': [
-         { id: 'm6', text: 'Can you prepare the discharge papers for Emily White?', sender: 'user', timestamp: 'Yesterday' },
-         { id: 'm7', text: 'Okay, I will.', sender: 'doctor', timestamp: 'Yesterday' },
-    ]
+    'S003': [],
 };
 
-export const mockNotifications: Notification[] = [
-    { id: 'N001', type: 'alert', message: 'Critical vitals alert for Jane Smith in ICU.', timestamp: '2 mins ago', read: false },
-    { id: 'N002', type: 'surgery', message: 'Surgery for Robert Brown scheduled for 2:00 PM.', timestamp: '1 hour ago', read: false },
-    { id: 'N003', type: 'message', message: 'New message from Dr. Alice Carter.', timestamp: '3 hours ago', read: false },
-    { id: 'N004', type: 'billing', message: 'Invoice #INV003 for Emily White is now overdue.', timestamp: '1 day ago', read: true },
-];
-
-export const mockLabResults: LabResult[] = [
-    { id: 'L001', testName: 'Complete Blood Count (CBC)', patientName: 'John Doe', patientId: 'P001', value: 'WBC 5.2', referenceRange: '4.0-11.0', date: '2023-11-04', status: 'Normal' },
-    { id: 'L002', testName: 'Lipid Panel', patientName: 'John Doe', patientId: 'P001', value: 'LDL 130', referenceRange: '< 100', date: '2023-11-04', status: 'Abnormal' },
-    { id: 'L003', testName: 'Thyroid-Stimulating Hormone (TSH)', patientName: 'Jane Smith', patientId: 'P002', value: '2.1', referenceRange: '0.4-4.0', date: '2023-11-03', status: 'Normal' },
-    { id: 'L004', testName: 'Glucose, Plasma', patientName: 'Robert Brown', patientId: 'P003', value: 'Pending', referenceRange: '70-99', date: '2023-11-05', status: 'Pending' },
-];
-
 export const mockSurgeries: Surgery[] = [
-    { id: 'SURG001', patientName: 'Robert Brown', patientId: 'P003', procedure: 'Knee Replacement', surgeon: 'Dr. Frank Miller', date: '2023-11-10', startTime: '09:00 AM', endTime: '11:30 AM', operatingRoom: 'OR 3', status: 'Scheduled' },
-    { id: 'SURG002', patientName: 'Michael Green', patientId: 'P005', procedure: 'Emergency Appendectomy', surgeon: 'Dr. General Surgeon', date: '2023-11-05', startTime: '08:00 PM', endTime: '09:00 PM', operatingRoom: 'OR 1', status: 'In Progress' },
-    { id: 'SURG003', patientName: 'Past Patient', patientId: 'P999', procedure: 'Gallbladder Removal', surgeon: 'Dr. Eva Wilson', date: '2023-10-28', startTime: '10:00 AM', endTime: '11:00 AM', operatingRoom: 'OR 2', status: 'Completed' },
-    { id: 'SURG004', patientName: 'Cancelled Patient', patientId: 'P888', procedure: 'Hernia Repair', surgeon: 'Dr. Sam Jones', date: '2023-11-06', startTime: '01:00 PM', endTime: '02:30 PM', operatingRoom: 'OR 4', status: 'Cancelled' },
-];
-
-export const mockMedications: Medication[] = [
-    { id: 'MED001', name: 'Lisinopril', dosage: '10mg', frequency: 'Once Daily', status: 'Active' },
-    { id: 'MED002', name: 'Metformin', dosage: '500mg', frequency: 'Twice Daily', status: 'Active' },
-    { id: 'MED003', name: 'Atorvastatin', dosage: '20mg', frequency: 'Once Daily', status: 'Active' },
-    { id: 'MED004', name: 'Amoxicillin', dosage: '250mg', frequency: 'Three times daily', status: 'Discontinued' },
+    { id: 'SURG001', patientName: 'Robert Johnson', patientId: 'P003', procedure: 'Knee Replacement', surgeon: 'Dr. David Evans', date: '2023-11-25', startTime: '08:00', endTime: '11:00', operatingRoom: 'OR 1', status: 'Scheduled' },
+    { id: 'SURG002', patientName: 'John Doe', patientId: 'P001', procedure: 'Coronary Bypass', surgeon: 'Dr. Alice Carter', date: '2023-11-10', startTime: '09:00', endTime: '14:00', operatingRoom: 'OR 2', status: 'Completed' },
+    { id: 'SURG003', patientName: 'New Patient', patientId: 'PXXX', procedure: 'Appendectomy', surgeon: 'Dr. General', date: '2023-11-18', startTime: '13:00', endTime: '14:30', operatingRoom: 'OR 3', status: 'In Progress' },
 ];
 
 export const mockPrescriptions: Prescription[] = [
-    { id: 'PRES001', medicationName: 'Lisinopril 10mg', dosage: '1 tablet', frequency: 'Once a day', duration: '30 days', patientName: 'John Doe', patientId: 'P001', issueDate: '2023-11-01', status: 'Active' },
-    { id: 'PRES002', medicationName: 'Metformin 500mg', dosage: '1 tablet', frequency: 'Twice a day', duration: '90 days', patientName: 'Jane Smith', patientId: 'P002', issueDate: '2023-10-15', status: 'Active' },
+    { id: 'RX001', patientName: 'John Doe', patientId: 'P001', medicationName: 'Lisinopril', dosage: '10mg', frequency: 'Once a day', duration: '30 days', issueDate: '2023-10-20', status: 'Active' },
+    { id: 'RX002', patientName: 'Emily Williams', patientId: 'P004', medicationName: 'Amoxicillin', dosage: '500mg', frequency: 'Twice a day', duration: '7 days', issueDate: '2023-11-05', status: 'Completed' },
+    { id: 'RX003', patientName: 'Michael Brown', patientId: 'P005', medicationName: 'Chemotherapy Drug A', dosage: 'IV', frequency: 'Cycle 1', duration: 'N/A', issueDate: '2023-11-11', status: 'Active' },
+];
+
+export const mockLabResults: LabResult[] = [
+    { id: 'LAB001', patientName: 'John Doe', patientId: 'P001', testName: 'Complete Blood Count', result: 'Normal', referenceRange: 'N/A', date: '2023-10-16', status: 'Completed' },
+    { id: 'LAB002', patientName: 'Jane Smith', patientId: 'P002', testName: 'Troponin I', result: '0.8 ng/mL', referenceRange: '< 0.4 ng/mL', date: '2023-11-12', status: 'Abnormal' },
+    { id: 'LAB003', patientName: 'Michael Brown', patientId: 'P005', testName: 'Tumor Markers', result: 'Pending', referenceRange: 'N/A', date: '2023-11-13', status: 'Pending' },
 ];
 
 export const mockVirtualConsultations: VirtualConsultation[] = [
-    { id: 'VC001', patientName: 'Sarah Johnson', doctorName: 'Dr. Ben Davis', date: '2023-11-20', time: '02:00 PM', status: 'Scheduled' },
-    { id: 'VC002', patientName: 'Kevin Harris', doctorName: 'Dr. Primary Care', date: '2023-11-22', time: '10:30 AM', status: 'Scheduled' },
-    { id: 'VC003', patientName: 'Emily White', doctorName: 'Dr. Primary Care', date: '2023-11-02', time: '03:00 PM', status: 'Completed' },
+  { id: 'VC001', patientName: 'Emily Williams', doctorName: 'Dr. Frank Green', date: '2023-11-28', time: '03:00 PM', status: 'Scheduled' },
+  { id: 'VC002', patientName: 'John Doe', doctorName: 'Dr. Alice Carter', date: '2023-11-14', time: '11:00 AM', status: 'Completed' },
+];
+
+export const mockGenomicVariants: GenomicVariant[] = [
+  { id: 'GV001', gene: 'BRCA1', variant: 'c.5266dupC', classification: 'Pathogenic', implication: 'Increased risk of breast and ovarian cancer.' },
+  { id: 'GV002', gene: 'CFTR', variant: 'p.Phe508del', classification: 'Pathogenic', implication: 'Associated with cystic fibrosis.' },
+  { id: 'GV003', gene: 'APOE', variant: 'ε4', classification: 'Likely Pathogenic', implication: 'Increased risk factor for Alzheimer\'s disease.' },
 ];

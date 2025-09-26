@@ -1,7 +1,8 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App';
+// FIX: Added a file extension to the import of App to resolve the module error.
+import App from './App.tsx';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {

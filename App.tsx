@@ -1,37 +1,40 @@
-// FIX: Created this file to define the main App component.
-import React, { useState, useEffect, useCallback } from 'react';
+// FIX: Created the main App component, which manages state, navigation, and renders different views of the hospital management dashboard.
+import React, { useState, useEffect, useMemo } from 'react';
 import Sidebar from './components/Sidebar';
 import Dashboard from './components/Dashboard';
 import Patients from './components/Patients';
-import Staff from './components/Staff';
 import Appointments from './components/Appointments';
+import Billing from './components/Billing';
+import Staff from './components/Staff';
 import SymptomChecker from './components/SymptomChecker';
+import Telemedicine from './components/Telemedicine';
 import DarkModeToggle from './components/DarkModeToggle';
 import GlobalSearch from './components/GlobalSearch';
 import Notifications from './components/Notifications';
-import type { View } from './types';
+import SurgicalSchedule from './components/SurgicalSchedule';
+import Pharmacy from './components/Pharmacy';
+import Laboratory from './components/Laboratory';
+import HospitalMap from './components/HospitalMap';
 import PatientDetail from './components/PatientDetail';
 import StaffDetail from './components/StaffDetail';
 import DepartmentDetail from './components/DepartmentDetail';
-import Billing from './components/Billing';
-import Pharmacy from './components/Pharmacy';
-import Laboratory from './components/Laboratory';
-import SurgicalSchedule from './components/SurgicalSchedule';
-import Telemedicine from './components/Telemedicine';
-import HospitalMap from './components/HospitalMap';
 import PatientPortal from './components/PatientPortal';
 import VirtualConsultations from './components/VirtualConsultations';
+import ConsultationRoom from './components/ConsultationRoom';
+import Genomics from './components/Genomics';
+import GenomicDetail from './components/GenomicDetail';
+import WearableData from './components/WearableData';
+import type { View } from './types';
 
 const App: React.FC = () => {
+  const [view, setView] = useState<View>('dashboard');
+  const [activeId, setActiveId] = useState<string | null>(null);
   const [isDarkMode, setIsDarkMode] = useState(() => {
     if (typeof window !== 'undefined') {
         return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
     }
     return false;
   });
-
-  const [currentView, setCurrentView] = useState<View>('dashboard');
-  const [activeId, setActiveId] = useState<string | null>(null);
 
   useEffect(() => {
     if (isDarkMode) {
@@ -45,46 +48,60 @@ const App: React.FC = () => {
     setIsDarkMode(!isDarkMode);
   };
 
-  const navigate = useCallback((view: View, id: string | null = null) => {
-    setCurrentView(view);
+  const navigate = (view: View, id: string | null = null) => {
+    setView(view);
     setActiveId(id);
-    window.scrollTo(0, 0);
-  }, []);
+  };
 
-  const renderContent = () => {
-    switch (currentView) {
+  const pageTitle = useMemo(() => {
+    if (view === 'patient-detail' && activeId) return 'Patient Details';
+    if (view === 'staff-detail' && activeId) return 'Staff Details';
+    if (view === 'department-detail' && activeId) return `${activeId} Department`;
+    return view.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+  }, [view, activeId]);
+
+  const renderView = () => {
+    switch (view) {
       case 'dashboard':
         return <Dashboard />;
       case 'patients':
         return <Patients navigate={navigate} />;
       case 'patient-detail':
-        return activeId ? <PatientDetail patientId={activeId} navigate={navigate} /> : <div>Patient not found.</div>;
+        return activeId ? <PatientDetail patientId={activeId} navigate={navigate} /> : <p>No patient selected.</p>;
+      case 'appointments':
+        return <Appointments />;
+      case 'billing':
+        return <Billing />;
       case 'staff':
         return <Staff navigate={navigate} />;
       case 'staff-detail':
-        return activeId ? <StaffDetail staffId={activeId} /> : <div>Staff member not found.</div>;
-       case 'department-detail':
-        return activeId ? <DepartmentDetail departmentName={activeId} /> : <div>Department not found.</div>;
-      case 'appointments':
-        return <Appointments />;
+        return activeId ? <StaffDetail staffId={activeId} /> : <p>No staff selected.</p>;
       case 'symptom-checker':
         return <SymptomChecker />;
-      case 'billing':
-        return <Billing />;
+      case 'telemedicine':
+        return <Telemedicine />;
+      case 'surgical-schedule':
+        return <SurgicalSchedule />;
       case 'pharmacy':
         return <Pharmacy />;
       case 'laboratory':
         return <Laboratory />;
-      case 'surgical-schedule':
-          return <SurgicalSchedule />;
-      case 'telemedicine':
-          return <Telemedicine />;
       case 'hospital-map':
-          return <HospitalMap navigate={navigate} />;
+        return <HospitalMap navigate={navigate} />;
+      case 'department-detail':
+        return activeId ? <DepartmentDetail departmentName={activeId} /> : <p>No department selected.</p>;
       case 'patient-portal':
-          return <PatientPortal navigate={navigate} />;
+        return <PatientPortal navigate={navigate} />;
       case 'virtual-consultations':
-          return <VirtualConsultations />;
+        return <VirtualConsultations />;
+       case 'consultation-room':
+        return <ConsultationRoom />;
+      case 'genomics':
+        return <Genomics navigate={navigate} />;
+      case 'genomic-detail':
+        return activeId ? <GenomicDetail patientId={activeId} /> : <p>No patient selected for genomic detail.</p>;
+      case 'wearable-data':
+        return activeId ? <WearableData patientId={activeId} /> : <p>No patient selected for wearable data.</p>;
       default:
         return <Dashboard />;
     }
@@ -92,16 +109,17 @@ const App: React.FC = () => {
 
   return (
     <div className="bg-gray-100 dark:bg-gray-900 min-h-screen flex text-gray-800 dark:text-gray-200">
-      <Sidebar currentView={currentView} navigate={navigate} />
-      <main className="flex-1 p-4 sm:p-6 lg:p-8 ml-20 lg:ml-64 transition-all duration-300">
+      <Sidebar currentView={view} navigate={navigate} />
+      <main className="flex-1 p-6 md:p-8 overflow-y-auto">
         <header className="flex justify-between items-center mb-8">
-            <GlobalSearch />
+            <h1 className="text-2xl font-bold text-gray-800 dark:text-white">{pageTitle}</h1>
             <div className="flex items-center space-x-4">
+                <GlobalSearch />
                 <Notifications />
                 <DarkModeToggle isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
             </div>
         </header>
-        {renderContent()}
+        {renderView()}
       </main>
     </div>
   );
