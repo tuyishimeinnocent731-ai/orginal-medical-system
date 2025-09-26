@@ -1,5 +1,7 @@
+
 // FIX: Created this file to define the StaffFormModal component.
 import React, { useState } from 'react';
+// FIX: Added file extension to the 'types' import to resolve a module not found error.
 import type { Staff } from '../types.ts';
 
 interface StaffFormModalProps {

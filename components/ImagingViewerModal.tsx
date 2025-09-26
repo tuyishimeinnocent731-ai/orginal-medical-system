@@ -1,6 +1,7 @@
 
 // FIX: Created a modal component for viewing medical imaging studies, allowing users to see a larger version of an image with its details.
 import React from 'react';
+// FIX: Added file extension to the 'types' import to resolve a module not found error.
 import type { ImagingStudy } from '../types.ts';
 
 interface ImagingViewerModalProps {

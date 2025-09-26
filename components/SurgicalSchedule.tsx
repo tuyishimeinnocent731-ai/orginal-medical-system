@@ -1,5 +1,7 @@
+
 // FIX: Created this file to define the SurgicalSchedule component.
 import React, { useState } from 'react';
+// FIX: Added file extensions to imports of 'mockData' and 'types' to resolve module not found errors.
 import { mockSurgeries } from '../services/mockData.ts';
 import type { Surgery } from '../types.ts';
 import BookSurgeryModal from './BookSurgeryModal.tsx';

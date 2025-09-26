@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+// FIX: Added file extensions to imports of 'mockData' and 'types' to resolve module not found errors.
 import { mockStaff } from '../services/mockData.ts';
 import type { Staff } from '../types.ts';
 import StaffFormModal from './StaffFormModal.tsx';

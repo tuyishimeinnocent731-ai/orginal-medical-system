@@ -14,14 +14,14 @@ const Appointments: React.FC = () => {
             id: `APP${(Math.random() * 1000).toFixed(0).padStart(3, '0')}`,
             status: 'Scheduled',
         };
-        setAppointments(prev => [newAppointment, ...prev].sort((a,b) => new Date(a.date).getTime() - new Date(b.date).getTime()));
+        setAppointments(prev => [...prev, newAppointment]);
     };
-
+    
     const getStatusColor = (status: Appointment['status']) => {
         switch (status) {
             case 'Scheduled': return 'bg-blue-100 text-blue-800';
             case 'Completed': return 'bg-green-100 text-green-800';
-            case 'Canceled': return 'bg-gray-100 text-gray-800';
+            case 'Cancelled': return 'bg-gray-100 text-gray-800';
         }
     };
 
@@ -39,21 +39,19 @@ const Appointments: React.FC = () => {
                             <th className="p-3">Doctor</th>
                             <th className="p-3">Date</th>
                             <th className="p-3">Time</th>
-                            <th className="p-3">Type</th>
                             <th className="p-3">Status</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {appointments.map(app => (
-                            <tr key={app.id} className="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                                <td className="p-3 font-medium">{app.patientName}</td>
-                                <td className="p-3">{app.doctorName}</td>
-                                <td className="p-3">{app.date}</td>
-                                <td className="p-3">{app.time}</td>
-                                <td className="p-3">{app.type}</td>
+                        {appointments.map(appt => (
+                            <tr key={appt.id} className="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                                <td className="p-3 font-medium">{appt.patientName}</td>
+                                <td className="p-3">{appt.doctorName}</td>
+                                <td className="p-3">{appt.date}</td>
+                                <td className="p-3">{appt.time}</td>
                                 <td className="p-3">
-                                     <span className={`px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(app.status)}`}>
-                                        {app.status}
+                                     <span className={`px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(appt.status)}`}>
+                                        {appt.status}
                                     </span>
                                 </td>
                             </tr>

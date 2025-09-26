@@ -1,5 +1,7 @@
+
 // FIX: Created this file to define the Laboratory component.
 import React, { useState } from 'react';
+// FIX: Added file extensions to imports of 'mockData' and 'types' to resolve module not found errors.
 import { mockLabResults } from '../services/mockData.ts';
 import type { LabResult } from '../types.ts';
 import LabResultFormModal from './LabResultFormModal.tsx';

@@ -1,51 +1,43 @@
 
 import React from 'react';
-import type { Department } from '../types.ts';
+import { mockBeds } from '../services/mockData.ts';
+import type { Bed } from '../types.ts';
 
 const BedManagement: React.FC = () => {
-    const departments: { name: Department; total: number; occupied: number }[] = [
-        { name: 'Cardiology', total: 20, occupied: 18 },
-        { name: 'Neurology', total: 15, occupied: 12 },
-        { name: 'Oncology', total: 25, occupied: 22 },
-        { name: 'Pediatrics', total: 10, occupied: 5 },
-        { name: 'ICU', total: 12, occupied: 11 },
-        { name: 'Orthopedics', total: 18, occupied: 15 },
-    ];
+  const wards = [...new Set(mockBeds.map(b => b.ward))];
 
-    const renderBeds = (total: number, occupied: number) => {
-        const beds = [];
-        for (let i = 1; i <= total; i++) {
-            const isOccupied = i <= occupied;
-            beds.push(
-                <div key={i} className={`w-8 h-8 rounded flex items-center justify-center text-xs font-bold ${isOccupied ? 'bg-red-400 dark:bg-red-600' : 'bg-green-400 dark:bg-green-600'}`}>
-                    {i}
-                </div>
-            );
-        }
-        return beds;
-    };
+  const getStatusClasses = (status: Bed['status']) => {
+    switch (status) {
+      case 'Occupied':
+        return 'bg-red-200 dark:bg-red-800 border-red-400';
+      case 'Available':
+        return 'bg-green-200 dark:bg-green-800 border-green-400';
+      case 'Cleaning':
+        return 'bg-yellow-200 dark:bg-yellow-700 border-yellow-400';
+    }
+  };
 
-    return (
-        <div className="space-y-6">
-            <h1 className="text-3xl font-bold">Bed Management</h1>
-            <div className="space-y-8">
-                {departments.map(dept => (
-                    <div key={dept.name} className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md">
-                        <div className="flex justify-between items-center mb-4">
-                            <h2 className="text-xl font-semibold">{dept.name}</h2>
-                            <p className="font-medium">
-                                Occupancy: {dept.occupied} / {dept.total} 
-                                <span className="text-sm text-gray-500"> ({((dept.occupied / dept.total) * 100).toFixed(1)}%)</span>
-                            </p>
-                        </div>
-                        <div className="grid grid-cols-5 sm:grid-cols-8 md:grid-cols-10 gap-2">
-                            {renderBeds(dept.total, dept.occupied)}
-                        </div>
-                    </div>
-                ))}
-            </div>
+  return (
+    <div className="space-y-6">
+      <h1 className="text-3xl font-bold">Bed Management</h1>
+      {wards.map(ward => (
+        <div key={ward} className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md">
+          <h2 className="text-xl font-semibold mb-4">{ward}</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
+            {mockBeds.filter(b => b.ward === ward).map(bed => (
+              <div
+                key={bed.id}
+                className={`p-3 rounded-lg border-2 text-center ${getStatusClasses(bed.status)}`}
+              >
+                <p className="font-bold text-lg">{bed.bedNumber}</p>
+                <p className="text-xs truncate">{bed.patientName || bed.status}</p>
+              </div>
+            ))}
+          </div>
         </div>
-    );
+      ))}
+    </div>
+  );
 };
 
 export default BedManagement;

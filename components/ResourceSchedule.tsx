@@ -1,5 +1,7 @@
+
 // FIX: Created this file to define the ResourceSchedule component.
 import React from 'react';
+// FIX: Added file extension to the 'mockData' import to resolve a module not found error.
 import { mockResources } from '../services/mockData.ts';
 
 const ResourceSchedule: React.FC = () => {

@@ -1,4 +1,5 @@
 
+
 import { GoogleGenAI, GenerateContentResponse } from "@google/genai";
 
 // The API key is handled by the environment variable `process.env.API_KEY`.

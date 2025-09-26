@@ -1,5 +1,6 @@
 
 import React from 'react';
+// FIX: Added file extensions to imports of 'mockData' and 'types' to resolve module not found errors.
 import { mockGenomicVariants } from '../services/mockData.ts';
 import type { GenomicVariant } from '../types.ts';
 

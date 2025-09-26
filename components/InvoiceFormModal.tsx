@@ -1,5 +1,7 @@
+
 // FIX: Created this file to define the InvoiceFormModal component.
 import React, { useState } from 'react';
+// FIX: Added file extension to the 'types' import to resolve a module not found error.
 import type { Invoice } from '../types.ts';
 
 interface InvoiceFormModalProps {
