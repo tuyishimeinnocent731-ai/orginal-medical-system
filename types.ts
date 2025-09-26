@@ -1,101 +1,56 @@
-export type View = 
-  | 'dashboard'
-  | 'patients'
-  | 'patient-detail'
-  | 'appointments'
-  | 'symptom-checker'
-  | 'billing'
-  | 'staff'
-  | 'staff-detail'
-  | 'map'
-  | 'department-detail'
-  | 'telemedicine'
-  | 'surgeries'
-  | 'pharmacy'
-  | 'laboratory'
-  | 'patient-portal'
-  | 'virtual-consultations'
-  | 'consultation-room'
-  | 'genomics'
-  | 'genomic-detail'
-  | 'wearable-data'
-  | 'clinical-trials'
-  | 'financials'
-  | 'public-health';
-
-export type Department = 'Cardiology' | 'Neurology' | 'Orthopedics' | 'ICU' | 'Oncology' | 'General Medicine';
-
-export interface TimelineEvent {
-    id: string;
-    date: string;
-    type: 'Admission' | 'Discharge' | 'Procedure' | 'Medication' | 'Observation';
-    title: string;
-    description: string;
-}
-
-export interface ImagingStudy {
-    id: string;
-    patientName: string;
-    studyType: 'X-Ray' | 'MRI' | 'CT Scan';
-    bodyPart: string;
-    date: string;
-    thumbnailUrl: string;
-    imageUrl: string;
-}
-
-
+// FIX: Created this file to define the application's data types.
 export interface Patient {
   id: string;
   name: string;
   age: number;
-  gender: 'Male' | 'Female';
-  department: Department;
-  lastVisit: string;
+  gender: 'Male' | 'Female' | 'Other';
+  bloodType: string;
   status: 'Stable' | 'Critical' | 'Discharged';
-  avatarUrl: string;
+  department: 'Cardiology' | 'Neurology' | 'Oncology' | 'Orthopedics' | 'General Medicine' | 'Pediatrics';
+  bedNumber: string;
+  admissionDate: string;
   vitals?: {
     heartRate: number[];
     spO2: number[];
-    bloodPressure: string[];
   };
-  timeline: TimelineEvent[];
+  timeline?: TimelineEvent[];
   imagingStudies?: ImagingStudy[];
-  hasGenomicData?: boolean;
 }
 
 export interface Staff {
   id: string;
   name: string;
-  role: string;
-  department: Department;
+  role: 'Doctor' | 'Nurse' | 'Surgeon' | 'Administrator' | 'Technician';
+  department: 'Cardiology' | 'Neurology' | 'Oncology' | 'Orthopedics' | 'General Medicine' | 'Pediatrics' | 'Administration';
   onCall: boolean;
-  avatarUrl: string;
-  assignedPatients?: string[];
+  shift: 'Day' | 'Night';
 }
 
 export interface Appointment {
   id: string;
   patientName: string;
-  doctor: string;
-  department: Department;
+  doctorName: string;
   date: string;
   time: string;
+  type: 'Routine Checkup' | 'Consultation' | 'Follow-up';
   status: 'Scheduled' | 'Completed' | 'Cancelled';
 }
 
-export interface SymptomAnalysisResult {
-    possibleConditions: { name: string; explanation: string }[];
-    suggestedNextSteps: string[];
-    disclaimer: string;
+export interface Invoice {
+  id: string;
+  patientName: string;
+  patientId: string;
+  date: string;
+  amount: number;
+  status: 'Paid' | 'Pending' | 'Overdue';
 }
 
-export interface Invoice {
-    id: string;
-    patientName: string;
-    patientId: string;
-    date: string;
-    amount: number;
-    status: 'Paid' | 'Pending' | 'Overdue';
+export interface Notification {
+  id: string;
+  type: 'message' | 'alert' | 'surgery' | 'billing';
+  message: string;
+  timestamp: string;
+  read: boolean;
 }
 
 export interface Surgery {
@@ -111,106 +66,99 @@ export interface Surgery {
     status: 'Scheduled' | 'In Progress' | 'Completed' | 'Cancelled';
 }
 
-export interface Notification {
+export interface ImagingStudy {
     id: string;
-    type: 'message' | 'alert' | 'surgery' | 'billing';
-    message: string;
-    timestamp: string;
-    read: boolean;
+    patientName: string;
+    studyType: 'X-Ray' | 'CT Scan' | 'MRI';
+    bodyPart: string;
+    date: string;
+    imageUrl: string;
 }
 
-export interface ChatContact {
+export interface TimelineEvent {
     id: string;
-    name: string;
-    avatarUrl: string;
-    lastMessage: string;
-    unreadCount: number;
-}
-
-export interface ChatMessage {
-    id: string;
-    text: string;
-    sender: 'user' | 'doctor';
-    timestamp: string;
+    date: string;
+    type: 'Admission' | 'Medication' | 'Observation' | 'Procedure' | 'Discharge';
+    title: string;
+    description: string;
 }
 
 export interface Prescription {
-    id: string;
-    patientName: string;
-    patientId: string;
-    medicationName: string;
-    dosage: string;
-    frequency: string;
-    duration: string;
-    issueDate: string;
-    status: 'Active' | 'Completed' | 'Cancelled';
+  id: string;
+  patientName: string;
+  patientId: string;
+  medicationName: string;
+  dosage: string;
+  frequency: string;
+  duration: string;
+  issueDate: string;
+  status: 'Active' | 'Completed' | 'Cancelled';
 }
 
 export interface LabResult {
     id: string;
     patientName: string;
-    patientId: string;
     testName: string;
     result: string;
     referenceRange: string;
     date: string;
-    status: 'Completed' | 'Pending' | 'Abnormal';
+    status: 'Pending' | 'Completed';
 }
 
-export interface VirtualConsultation {
+export interface GenomicData {
     id: string;
     patientName: string;
-    doctorName: string;
-    date: string;
-    time: string;
-    status: 'Scheduled' | 'Completed' | 'Cancelled';
+    sequenceId: string;
+    markers: { marker: string; value: string }[];
+    summary: string;
 }
 
-export interface GenomicVariant {
-    id: string;
-    gene: string;
-    variant: string;
-    classification: 'Pathogenic' | 'Likely Pathogenic' | 'Uncertain Significance' | 'Benign';
-    implication: string;
+export interface WearableDataPoint {
+    time: string;
+    value: number;
+}
+export interface WearableData {
+    patientName: string;
+    dataType: 'Heart Rate' | 'Steps' | 'Sleep';
+    data: WearableDataPoint[];
 }
 
 export interface ClinicalTrial {
     id: string;
     title: string;
-    phase: 'Phase I' | 'Phase II' | 'Phase III' | 'Phase IV';
+    sponsor: string;
     status: 'Recruiting' | 'Active' | 'Completed';
-    principalInvestigator: string;
+    eligibility: string;
 }
 
-export interface RegionalHealthData {
-  regionId: string;
-  regionName: string;
-  population: number;
-  riskIndex: number; // 0-100
-  cases: {
-      respiratory: number;
-      gastrointestinal: number;
-  };
-}
-
-export interface SyndromicTrendData {
-  date: string;
-  respiratory: number;
-  gastrointestinal: number;
-  fever: number;
-}
-
-export interface OutbreakAlert {
+export interface FinancialRecord {
     id: string;
-    disease: string;
-    riskLevel: 'High' | 'Medium' | 'Low';
-    affectedRegions: string[];
+    type: 'Revenue' | 'Expense';
+    category: string;
+    amount: number;
+    date: string;
 }
 
-export interface OutbreakPredictionResult {
-    prediction: string;
-    confidence: 'High' | 'Medium' | 'Low';
-    predictedDisease: string;
-    predictedRegions: string[];
-    rationale: string;
+export interface PublicHealthData {
+    region: string;
+    disease: string;
+    cases: number;
+    date: string;
+}
+
+export interface Ambulance {
+    id: string;
+    location: { lat: number, lng: number };
+    status: 'Available' | 'En-route' | 'At Scene' | 'Returning';
+    destination?: string;
+}
+
+export interface Consultation {
+  id: string;
+  patientName: string;
+  doctorName: string;
+  date: string;
+  time: string;
+  platform: 'Zoom' | 'Google Meet' | 'Hospital Portal';
+  status: 'Scheduled' | 'Completed';
 }

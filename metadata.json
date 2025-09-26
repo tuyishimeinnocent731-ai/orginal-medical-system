@@ -1,5 +1,5 @@
 {
-  "name": "HealthSys AI - Advanced Hospital & Public Health Management",
-  "description": "A comprehensive, AI-powered hospital management system with advanced features including patient management, telemedicine, e-pharmacy, online payments, genomics, IoT integration, robotic pharmacy automation, clinical trial matching, financial analytics, and a public health epidemiology dashboard.",
+  "name": "MedSys - AI Hospital Management",
+  "description": "An advanced, AI-powered hospital management system providing comprehensive tools for patient care, administration, and analytics.",
   "requestFramePermissions": []
 }

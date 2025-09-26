@@ -1,114 +1,59 @@
+// FIX: Created this file to define the Sidebar component.
 import React from 'react';
-import type { View } from '../types.ts';
-import { 
-    DashboardIcon, PatientsIcon, AppointmentsIcon, HeartIcon, BillingIcon, StaffIcon, MapIcon, 
-    TelemedicineIcon, SurgeryIcon, PharmacyIcon, LabIcon, UserCircleIcon, DnaIcon, ClipboardIcon, DollarIcon,
-    PublicHealthIcon
+import {
+  DashboardIcon, PatientsIcon, AppointmentsIcon, BillingIcon, StaffIcon, SymptomCheckerIcon,
+  SurgeryIcon, PharmacyIcon, LaboratoryIcon, TelemedicineIcon, GenomicsIcon, ClinicalTrialsIcon,
+  FinancialsIcon, PublicHealthIcon, AmbulanceDispatchIcon
 } from './IconComponents.tsx';
 
+type View = 'Dashboard' | 'Patients' | 'Appointments' | 'Billing' | 'Staff' | 'SymptomChecker' | 'SurgicalSchedule' | 'Pharmacy' | 'Laboratory' | 'Telemedicine' | 'Genomics' | 'ClinicalTrials' | 'Financials' | 'PublicHealth' | 'AmbulanceDispatch';
+
 interface SidebarProps {
-  currentView: View;
-  navigate: (view: View) => void;
+  activeView: View;
+  setActiveView: (view: View) => void;
 }
 
-const NavLink: React.FC<{
-  icon: React.ReactNode;
-  label: string;
-  isActive: boolean;
-  onClick: () => void;
-}> = ({ icon, label, isActive, onClick }) => {
+const navItems: { view: View; label: string; icon: React.FC<any> }[] = [
+  { view: 'Dashboard', label: 'Dashboard', icon: DashboardIcon },
+  { view: 'Patients', label: 'Patients', icon: PatientsIcon },
+  { view: 'Appointments', label: 'Appointments', icon: AppointmentsIcon },
+  { view: 'SurgicalSchedule', label: 'Surgeries', icon: SurgeryIcon },
+  { view: 'Billing', label: 'Billing', icon: BillingIcon },
+  { view: 'Staff', label: 'Staff', icon: StaffIcon },
+  { view: 'Pharmacy', label: 'Pharmacy', icon: PharmacyIcon },
+  { view: 'Laboratory', label: 'Laboratory', icon: LaboratoryIcon },
+  { view: 'Telemedicine', label: 'Telemedicine', icon: TelemedicineIcon },
+  { view: 'AmbulanceDispatch', label: 'Dispatch', icon: AmbulanceDispatchIcon },
+  { view: 'SymptomChecker', label: 'AI Symptom Checker', icon: SymptomCheckerIcon },
+  { view: 'Genomics', label: 'Genomics', icon: GenomicsIcon },
+  { view: 'ClinicalTrials', label: 'Clinical Trials', icon: ClinicalTrialsIcon },
+  { view: 'Financials', label: 'Financials', icon: FinancialsIcon },
+  { view: 'PublicHealth', label: 'Public Health', icon: PublicHealthIcon },
+];
+
+const Sidebar: React.FC<SidebarProps> = ({ activeView, setActiveView }) => {
   return (
-    <button
-      onClick={onClick}
-      className={`w-full flex items-center px-4 py-2.5 text-sm font-medium rounded-lg transition-colors duration-200 ${
-        isActive
-          ? 'bg-blue-600 text-white shadow-lg'
-          : 'text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'
-      }`}
-    >
-      <div className="w-6 h-6 mr-3">{icon}</div>
-      <span>{label}</span>
-    </button>
-  );
-};
-
-const NavSection: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
-    <div>
-        <h3 className="px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">{title}</h3>
-        <div className="space-y-1">
-            {children}
-        </div>
-    </div>
-);
-
-const Sidebar: React.FC<SidebarProps> = ({ currentView, navigate }) => {
-  // FIX: Explicitly typed navItems to ensure 'view' is of type View, not string.
-  const navItems: Record<string, { view: View; label: string; icon: React.ReactNode }[]> = {
-    clinical: [
-      { view: 'dashboard', label: 'Dashboard', icon: <DashboardIcon /> },
-      { view: 'patients', label: 'Patients', icon: <PatientsIcon /> },
-      { view: 'appointments', label: 'Appointments', icon: <AppointmentsIcon /> },
-      { view: 'surgeries', label: 'Surgeries', icon: <SurgeryIcon /> },
-      { view: 'telemedicine', label: 'Telemedicine', icon: <TelemedicineIcon /> },
-    ],
-    administrative: [
-      { view: 'billing', label: 'Billing', icon: <BillingIcon /> },
-      { view: 'staff', label: 'Staff', icon: <StaffIcon /> },
-      { view: 'map', label: 'Hospital Map', icon: <MapIcon /> },
-      { view: 'financials', label: 'Financials', icon: <DollarIcon /> },
-      { view: 'public-health', label: 'Public Health', icon: <PublicHealthIcon /> },
-    ],
-    diagnostics: [
-      { view: 'symptom-checker', label: 'AI Symptom Checker', icon: <HeartIcon /> },
-      { view: 'laboratory', label: 'Laboratory', icon: <LabIcon /> },
-      { view: 'pharmacy', label: 'Pharmacy', icon: <PharmacyIcon /> },
-    ],
-    advanced: [
-      { view: 'genomics', label: 'Genomics', icon: <DnaIcon /> },
-      { view: 'clinical-trials', label: 'Clinical Trials', icon: <ClipboardIcon /> },
-    ],
-    patientFocus: [
-        { view: 'patient-portal', label: 'Patient Portal', icon: <UserCircleIcon /> },
-    ]
-  };
-
-  return (
-    <aside className="w-64 bg-white dark:bg-gray-800 shadow-md flex-shrink-0 flex flex-col border-r dark:border-gray-700">
-      <div className="p-4 flex items-center flex-shrink-0">
-        <div className="p-2 bg-blue-600 rounded-lg">
-           <HeartIcon className="w-6 h-6 text-white"/>
-        </div>
-        <h1 className="text-xl font-bold ml-3 text-gray-800 dark:text-white">HealthSys AI</h1>
+    <div className="w-64 bg-white dark:bg-gray-800 flex-shrink-0 border-r dark:border-gray-700 flex flex-col">
+      <div className="h-16 flex items-center justify-center border-b dark:border-gray-700">
+        <h1 className="text-2xl font-bold text-blue-600 dark:text-blue-400">MedSys</h1>
       </div>
-      
-      <nav className="flex-1 space-y-6 overflow-y-auto p-4">
-        <NavSection title="Clinical">
-            {navItems.clinical.map(item => (
-                <NavLink key={item.view} label={item.label} icon={item.icon} isActive={currentView === item.view} onClick={() => navigate(item.view)} />
-            ))}
-        </NavSection>
-         <NavSection title="Administrative">
-            {navItems.administrative.map(item => (
-                <NavLink key={item.view} label={item.label} icon={item.icon} isActive={currentView === item.view} onClick={() => navigate(item.view)} />
-            ))}
-        </NavSection>
-        <NavSection title="Diagnostics">
-            {navItems.diagnostics.map(item => (
-                <NavLink key={item.view} label={item.label} icon={item.icon} isActive={currentView === item.view} onClick={() => navigate(item.view)} />
-            ))}
-        </NavSection>
-         <NavSection title="Advanced">
-            {navItems.advanced.map(item => (
-                <NavLink key={item.view} label={item.label} icon={item.icon} isActive={currentView === item.view} onClick={() => navigate(item.view)} />
-            ))}
-        </NavSection>
-        <NavSection title="Patient Focus">
-            {navItems.patientFocus.map(item => (
-                <NavLink key={item.view} label={item.label} icon={item.icon} isActive={currentView === item.view} onClick={() => navigate(item.view)} />
-            ))}
-        </NavSection>
+      <nav className="flex-1 overflow-y-auto p-4 space-y-2">
+        {navItems.map(item => (
+          <button
+            key={item.view}
+            onClick={() => setActiveView(item.view)}
+            className={`w-full flex items-center p-3 rounded-lg transition-colors text-left
+              ${activeView === item.view
+                ? 'bg-blue-500 text-white shadow-md'
+                : 'text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+              }`}
+          >
+            <item.icon className="w-6 h-6 mr-3" />
+            <span className="font-medium">{item.label}</span>
+          </button>
+        ))}
       </nav>
-    </aside>
+    </div>
   );
 };
 

@@ -1,103 +1,66 @@
-
-// FIX: Created the Pharmacy component to manage prescriptions, including a table view, search functionality, and a modal for issuing new prescriptions.
-import React, { useState, useMemo } from 'react';
+// FIX: Created this file to define the Pharmacy component.
+import React, { useState } from 'react';
 import { mockPrescriptions } from '../services/mockData.ts';
 import type { Prescription } from '../types.ts';
-import { SearchIcon } from './IconComponents.tsx';
 import IssuePrescriptionModal from './IssuePrescriptionModal.tsx';
 
-const getStatusBadge = (status: Prescription['status']) => {
-  switch (status) {
-    case 'Active':
-      return 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300';
-    case 'Completed':
-      return 'bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
-    case 'Cancelled':
-      return 'bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300';
-  }
-};
-
 const Pharmacy: React.FC = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [prescriptions, setPrescriptions] = useState(mockPrescriptions);
+    const [prescriptions, setPrescriptions] = useState<Prescription[]>(mockPrescriptions);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const filteredPrescriptions = useMemo(() => {
-    return prescriptions.filter(p =>
-      p.patientName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      p.medicationName.toLowerCase().includes(searchTerm.toLowerCase())
+    const handleSavePrescription = (newPrescription: Omit<Prescription, 'id'>) => {
+        const prescriptionWithId: Prescription = {
+            id: `RX${Date.now()}`,
+            ...newPrescription,
+        };
+        setPrescriptions(prev => [prescriptionWithId, ...prev]);
+    };
+
+    return (
+        <>
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md">
+                <div className="flex justify-between items-center mb-4">
+                    <h2 className="text-xl font-semibold">Pharmacy - Active Prescriptions</h2>
+                    <button onClick={() => setIsModalOpen(true)} className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                        Issue New Prescription
+                    </button>
+                </div>
+                <div className="overflow-x-auto">
+                    <table className="w-full text-left">
+                        <thead className="border-b dark:border-gray-700">
+                            <tr>
+                                <th className="p-3">Patient</th>
+                                <th className="p-3">Medication</th>
+                                <th className="p-3">Dosage</th>
+                                <th className="p-3">Frequency</th>
+                                <th className="p-3">Issued</th>
+                                <th className="p-3">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {prescriptions.map(rx => (
+                                <tr key={rx.id} className="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                                    <td className="p-3 font-medium">{rx.patientName} ({rx.patientId})</td>
+                                    <td className="p-3">{rx.medicationName}</td>
+                                    <td className="p-3">{rx.dosage}</td>
+                                    <td className="p-3">{rx.frequency}</td>
+                                    <td className="p-3">{rx.issueDate}</td>
+                                    <td className="p-3">
+                                        <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                                            rx.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+                                        }`}>
+                                            {rx.status}
+                                        </span>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            {isModalOpen && <IssuePrescriptionModal onClose={() => setIsModalOpen(false)} onSave={handleSavePrescription} />}
+        </>
     );
-  }, [searchTerm, prescriptions]);
-
-  const handleAddPrescription = (newPrescription: Omit<Prescription, 'id'>) => {
-    const prescriptionWithId = { ...newPrescription, id: `RX${Date.now()}` };
-    setPrescriptions(prev => [prescriptionWithId, ...prev]);
-  };
-
-  return (
-    <div className="space-y-6 animate-fade-in">
-       <header className="flex justify-between items-center">
-        <div>
-            <h2 className="text-3xl font-bold text-gray-800 dark:text-white">Pharmacy Management</h2>
-            <p className="text-gray-600 dark:text-gray-400 mt-1">Issue and track patient prescriptions.</p>
-        </div>
-        <button 
-            onClick={() => setIsModalOpen(true)}
-            className="px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-        >
-            Issue Prescription
-        </button>
-      </header>
-
-      <div className="relative">
-        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <SearchIcon className="h-5 w-5 text-gray-400" />
-        </div>
-        <input
-          type="text"
-          placeholder="Search by patient or medication..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800"
-        />
-      </div>
-
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-            <thead className="bg-gray-50 dark:bg-gray-700">
-              <tr>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Patient</th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Medication</th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Dosage</th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Issue Date</th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Status</th>
-              </tr>
-            </thead>
-            <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-              {filteredPrescriptions.map((p) => (
-                <tr key={p.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm font-medium text-gray-900 dark:text-white">{p.patientName}</div>
-                    <div className="text-sm text-gray-500 dark:text-gray-400">{p.patientId}</div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">{p.medicationName}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{p.dosage}, {p.frequency}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{p.issueDate}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusBadge(p.status)}`}>
-                      {p.status}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-      {isModalOpen && <IssuePrescriptionModal onClose={() => setIsModalOpen(false)} onSave={handleAddPrescription} />}
-    </div>
-  );
 };
 
 export default Pharmacy;

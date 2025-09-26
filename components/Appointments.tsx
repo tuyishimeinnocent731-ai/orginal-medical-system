@@ -1,84 +1,69 @@
-
-import React from 'react';
-// FIX: Created mockData.ts to provide mock appointment data.
+// FIX: Created this file to define the Appointments component.
+import React, { useState, useMemo } from 'react';
 import { mockAppointments } from '../services/mockData.ts';
-// FIX: Created types.ts to define the Appointment type.
 import type { Appointment } from '../types.ts';
 
-const getStatusColors = (status: Appointment['status']) => {
-  switch (status) {
-    case 'Scheduled':
-      return {
-        badge: 'bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300',
-        border: 'border-blue-500'
-      };
-    case 'Completed':
-      return {
-        badge: 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300',
-        border: 'border-green-500'
-      };
-    case 'Cancelled':
-      return {
-        badge: 'bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300',
-        border: 'border-red-500'
-      };
-  }
-};
-
-const AppointmentCard: React.FC<{ appointment: Appointment }> = ({ appointment }) => {
-    const colors = getStatusColors(appointment.status);
-    return (
-        <div className={`bg-white dark:bg-gray-800 p-5 rounded-lg shadow-md hover:shadow-lg transition-shadow border-l-4 ${colors.border}`}>
-            <div className="flex justify-between items-start">
-                <div>
-                    <p className="font-bold text-lg text-gray-800 dark:text-white">{appointment.patientName}</p>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">with {appointment.doctor}</p>
-                </div>
-                <span className={`px-3 py-1 text-xs font-semibold rounded-full ${colors.badge}`}>
-                    {appointment.status}
-                </span>
-            </div>
-            <div className="mt-4 border-t dark:border-gray-700 pt-4">
-                <div className="flex justify-between text-sm text-gray-600 dark:text-gray-300">
-                    <span>Department: <span className="font-medium text-gray-900 dark:text-white">{appointment.department}</span></span>
-                    <span>Date: <span className="font-medium text-gray-900 dark:text-white">{appointment.date} at {appointment.time}</span></span>
-                </div>
-            </div>
-        </div>
-    );
-};
-
 const Appointments: React.FC = () => {
-  const scheduled = mockAppointments.filter(a => a.status === 'Scheduled');
-  const completed = mockAppointments.filter(a => a.status === 'Completed');
-  const cancelled = mockAppointments.filter(a => a.status === 'Cancelled');
+  const [appointments] = useState<Appointment[]>(mockAppointments);
+  const [filterStatus, setFilterStatus] = useState('All');
+
+  const filteredAppointments = useMemo(() => {
+    if (filterStatus === 'All') return appointments;
+    return appointments.filter(a => a.status === filterStatus);
+  }, [appointments, filterStatus]);
+
+  const getStatusColor = (status: Appointment['status']) => {
+    switch (status) {
+      case 'Scheduled': return 'bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300';
+      case 'Completed': return 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300';
+      case 'Cancelled': return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
+      default: return 'bg-gray-200';
+    }
+  };
 
   return (
-    <div className="space-y-8 animate-fade-in">
-      <header>
-        <h2 className="text-3xl font-bold text-gray-800 dark:text-white">Appointment Schedule</h2>
-        <p className="text-gray-600 dark:text-gray-400 mt-1">View and manage all appointments.</p>
-      </header>
-
-      <div>
-        <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-200 mb-4">Scheduled ({scheduled.length})</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-          {scheduled.map(app => <AppointmentCard key={app.id} appointment={app} />)}
+    <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md">
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-xl font-semibold">Appointments Schedule</h2>
+        <div>
+          <span className="mr-2">Filter by status:</span>
+          <select value={filterStatus} onChange={e => setFilterStatus(e.target.value)} className="p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600">
+            <option value="All">All</option>
+            <option value="Scheduled">Scheduled</option>
+            <option value="Completed">Completed</option>
+            <option value="Cancelled">Cancelled</option>
+          </select>
         </div>
       </div>
-
-      <div>
-        <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-200 mb-4">Completed ({completed.length})</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-          {completed.map(app => <AppointmentCard key={app.id} appointment={app} />)}
-        </div>
-      </div>
-
-      <div>
-        <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-200 mb-4">Cancelled ({cancelled.length})</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-          {cancelled.map(app => <AppointmentCard key={app.id} appointment={app} />)}
-        </div>
+      <div className="overflow-x-auto">
+        <table className="w-full text-left">
+          <thead className="border-b dark:border-gray-700">
+            <tr>
+              <th className="p-3">Date</th>
+              <th className="p-3">Time</th>
+              <th className="p-3">Patient</th>
+              <th className="p-3">Doctor</th>
+              <th className="p-3">Type</th>
+              <th className="p-3">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredAppointments.map(appointment => (
+              <tr key={appointment.id} className="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                <td className="p-3">{appointment.date}</td>
+                <td className="p-3">{appointment.time}</td>
+                <td className="p-3 font-medium">{appointment.patientName}</td>
+                <td className="p-3">{appointment.doctorName}</td>
+                <td className="p-3">{appointment.type}</td>
+                <td className="p-3">
+                  <span className={`px-2 py-1 rounded-full text-xs font-semibold ${getStatusColor(appointment.status)}`}>
+                    {appointment.status}
+                  </span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );

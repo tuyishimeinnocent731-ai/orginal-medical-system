@@ -1,133 +1,100 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import type { View } from './types.ts';
+// FIX: Created this file to define the main App component.
+import React, { useState, useCallback } from 'react';
 import Sidebar from './components/Sidebar.tsx';
 import Dashboard from './components/Dashboard.tsx';
 import Patients from './components/Patients.tsx';
 import Appointments from './components/Appointments.tsx';
-import SymptomChecker from './components/SymptomChecker.tsx';
-import DarkModeToggle from './components/DarkModeToggle.tsx';
 import Billing from './components/Billing.tsx';
 import Staff from './components/Staff.tsx';
-import HospitalMap from './components/HospitalMap.tsx';
+import SymptomChecker from './components/SymptomChecker.tsx';
+import DarkModeToggle from './components/DarkModeToggle.tsx';
 import GlobalSearch from './components/GlobalSearch.tsx';
 import Notifications from './components/Notifications.tsx';
-import Telemedicine from './components/Telemedicine.tsx';
 import SurgicalSchedule from './components/SurgicalSchedule.tsx';
-import PatientDetail from './components/PatientDetail.tsx';
-import StaffDetail from './components/StaffDetail.tsx';
-import DepartmentDetail from './components/DepartmentDetail.tsx';
 import Pharmacy from './components/Pharmacy.tsx';
 import Laboratory from './components/Laboratory.tsx';
-import PatientPortal from './components/PatientPortal.tsx';
-import VirtualConsultations from './components/VirtualConsultations.tsx';
-import ConsultationRoom from './components/ConsultationRoom.tsx';
+import Telemedicine from './components/Telemedicine.tsx';
 import Genomics from './components/Genomics.tsx';
-import GenomicDetail from './components/GenomicDetail.tsx';
-import WearableData from './components/WearableData.tsx';
 import ClinicalTrials from './components/ClinicalTrials.tsx';
 import Financials from './components/Financials.tsx';
 import PublicHealth from './components/PublicHealth.tsx';
+import AmbulanceDispatch from './components/AmbulanceDispatch.tsx';
+
+type View = 'Dashboard' | 'Patients' | 'Appointments' | 'Billing' | 'Staff' | 'SymptomChecker' | 'SurgicalSchedule' | 'Pharmacy' | 'Laboratory' | 'Telemedicine' | 'Genomics' | 'ClinicalTrials' | 'Financials' | 'PublicHealth' | 'AmbulanceDispatch';
 
 const App: React.FC = () => {
-  const [view, setView] = useState<View>('dashboard');
-  const [activeId, setActiveId] = useState<string | null>(null);
   const [isDarkMode, setIsDarkMode] = useState(() => {
     if (typeof window !== 'undefined') {
-        return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      return document.documentElement.classList.contains('dark');
     }
     return false;
   });
+  const [activeView, setActiveView] = useState<View>('Dashboard');
 
-  useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  }, [isDarkMode]);
-
-  const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
-  };
-
-  const navigate = useCallback((newView: View, id: string | null = null) => {
-    setView(newView);
-    setActiveId(id);
-    window.scrollTo(0, 0);
+  const toggleDarkMode = useCallback(() => {
+    setIsDarkMode(prev => {
+      const newMode = !prev;
+      if (newMode) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+      return newMode;
+    });
   }, []);
 
-  const renderContent = () => {
-    switch (view) {
-      case 'dashboard':
+  const renderView = () => {
+    switch (activeView) {
+      case 'Dashboard':
         return <Dashboard />;
-      case 'patients':
-        return <Patients navigate={navigate} />;
-      case 'patient-detail':
-        return activeId ? <PatientDetail patientId={activeId} navigate={navigate} /> : <p>No patient selected.</p>;
-      case 'staff-detail':
-        return activeId ? <StaffDetail staffId={activeId} /> : <p>No staff selected.</p>;
-      case 'department-detail':
-        return activeId ? <DepartmentDetail departmentName={activeId} /> : <p>No department selected.</p>;
-       case 'genomic-detail':
-        return activeId ? <GenomicDetail patientId={activeId} /> : <p>No patient selected for genomic data.</p>;
-      case 'wearable-data':
-        return activeId ? <WearableData patientId={activeId} /> : <p>No patient selected for wearable data.</p>;
-      case 'appointments':
+      case 'Patients':
+        return <Patients />;
+      case 'Appointments':
         return <Appointments />;
-      case 'symptom-checker':
-        return <SymptomChecker />;
-      case 'billing':
+      case 'Billing':
         return <Billing />;
-      case 'staff':
-        return <Staff navigate={navigate} />;
-      case 'map':
-        return <HospitalMap navigate={navigate} />;
-      case 'telemedicine':
-        return <Telemedicine />;
-      case 'surgeries':
+      case 'Staff':
+        return <Staff />;
+      case 'SymptomChecker':
+        return <SymptomChecker />;
+      case 'SurgicalSchedule':
         return <SurgicalSchedule />;
-      case 'pharmacy':
+      case 'Pharmacy':
         return <Pharmacy />;
-      case 'laboratory':
+      case 'Laboratory':
         return <Laboratory />;
-      case 'patient-portal':
-        return <PatientPortal navigate={navigate} />;
-      case 'virtual-consultations':
-        return <VirtualConsultations />;
-      case 'consultation-room':
-        return <ConsultationRoom />;
-      case 'genomics':
-        return <Genomics navigate={navigate} />;
-      case 'clinical-trials':
+      case 'Telemedicine':
+        return <Telemedicine />;
+      case 'Genomics':
+        return <Genomics />;
+      case 'ClinicalTrials':
         return <ClinicalTrials />;
-      case 'financials':
+      case 'Financials':
         return <Financials />;
-      case 'public-health':
+      case 'PublicHealth':
         return <PublicHealth />;
+      case 'AmbulanceDispatch':
+        return <AmbulanceDispatch />;
       default:
         return <Dashboard />;
     }
   };
 
   return (
-    <div className={isDarkMode ? 'dark' : ''}>
-      <div className="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 flex h-screen">
-        <Sidebar currentView={view} navigate={navigate} />
-        <div className="flex-1 flex flex-col overflow-y-hidden">
-           <header className="bg-white dark:bg-gray-800 shadow-sm p-4 flex justify-between items-center flex-shrink-0 z-40">
-            <div>
-              {/* Breadcrumbs or Title could go here */}
-            </div>
-            <div className="flex items-center space-x-4">
-              <GlobalSearch />
-              <Notifications />
-              <DarkModeToggle isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
-            </div>
-          </header>
-          <main className="flex-1 p-6 lg:p-8 overflow-y-auto">
-            {renderContent()}
-          </main>
-        </div>
+    <div className={`flex h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100`}>
+      <Sidebar activeView={activeView} setActiveView={setActiveView} />
+      <div className="flex-1 flex flex-col overflow-hidden">
+        <header className="flex justify-between items-center p-4 bg-white dark:bg-gray-800 border-b dark:border-gray-700 shadow-sm">
+          <h1 className="text-2xl font-bold">{activeView}</h1>
+          <div className="flex items-center space-x-4">
+            <GlobalSearch />
+            <Notifications />
+            <DarkModeToggle isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
+          </div>
+        </header>
+        <main className="flex-1 overflow-x-hidden overflow-y-auto p-6">
+          {renderView()}
+        </main>
       </div>
     </div>
   );
