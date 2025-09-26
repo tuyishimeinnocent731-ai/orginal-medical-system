@@ -14,6 +14,9 @@
             'fade-in': 'fadeIn 0.3s ease-out',
             'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
             'float': 'float 12s ease-in-out infinite',
+            'word-in': 'slideInUp 0.8s cubic-bezier(0.19, 1, 0.22, 1) forwards',
+            'image-fade-in': 'image-fade-in 1.5s ease-in-out',
+            'image-fade-out': 'image-fade-out 1.5s ease-in-out',
           },
           keyframes: {
             fadeIn: {
@@ -28,7 +31,19 @@
               '0%': { transform: 'translateY(0px)' },
               '50%': { transform: 'translateY(-20px)' },
               '100%': { transform: 'translateY(0px)' },
-            }
+            },
+            slideInUp: {
+              'from': { transform: 'translateY(100%)', opacity: 0 },
+              'to': { transform: 'translateY(0)', opacity: 1 },
+            },
+            'image-fade-in': {
+              'from': { opacity: 0 },
+              'to': { opacity: 1 },
+            },
+            'image-fade-out': {
+              'from': { opacity: 1 },
+              'to': { opacity: 0 },
+            },
           },
         },
       },
@@ -59,6 +74,31 @@
     }
     .dark ::-webkit-scrollbar-thumb:hover {
       background: #777;
+    }
+
+    .word-wrapper {
+      display: inline-block;
+      overflow: hidden;
+      vertical-align: bottom;
+    }
+
+    .animate-word {
+      display: inline-block;
+      transform: translateY(100%);
+      opacity: 0;
+      animation: slideInUp 0.6s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+    }
+    
+    #heartbeat-path {
+        stroke-dasharray: 1000;
+        stroke-dashoffset: 1000;
+        animation: draw-heartbeat 5s ease-out forwards;
+    }
+
+    @keyframes draw-heartbeat {
+        to {
+            stroke-dashoffset: 0;
+        }
     }
   </style>
   <script type="importmap">
