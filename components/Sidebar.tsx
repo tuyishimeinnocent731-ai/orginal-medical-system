@@ -8,7 +8,8 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ activeView, setActiveView }) => {
-  const navItems: View[] = [
+  // FIX: Updated the type of navItems to include '---' as a valid value, resolving the type error in the map function.
+  const navItems: (View | '---')[] = [
     'Dashboard',
     'Patients',
     'Appointments',
@@ -25,7 +26,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeView, setActiveView }) => {
     'Financials',
     'Staff',
     'Settings',
-  ] as any;
+  ];
 
   return (
     <aside className="w-64 bg-white dark:bg-gray-800 flex-shrink-0 border-r dark:border-gray-700 flex flex-col">

@@ -1,4 +1,5 @@
 {
-  "name": "MedSys - AI Hospital Management",
-  "description": "An advanced, AI-powered hospital management system providing comprehensive tools for patient care, administration, and analytics."
+  "name": "MediDash - Advanced Hospital Management",
+  "description": "A comprehensive, feature-rich hospital management system with advanced modules for patient care, administration, and analytics.",
+  "requestFramePermissions": []
 }

@@ -37,7 +37,7 @@ const DepartmentOccupancyChart: React.FC = () => {
                         fill="#8884d8"
                         dataKey="value"
                         nameKey="name"
-                        // FIX: The 'percent' property can be undefined, so we must provide a default value to avoid a TypeError during an arithmetic operation.
+                        // FIX: The 'percent' property from recharts can be undefined. Added a nullish coalescing operator to provide a default value of 0 to prevent a runtime error during multiplication.
                         label={({ name, percent }) => `${name} ${((percent ?? 0) * 100).toFixed(0)}%`}
                     >
                         {data.map((entry, index) => (
