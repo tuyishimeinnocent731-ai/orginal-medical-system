@@ -1,4 +1,3 @@
-
 import React, { useState, useCallback, useEffect } from 'react';
 import type { View } from './types.ts';
 import Sidebar from './components/Sidebar.tsx';
@@ -27,6 +26,7 @@ import GenomicDetail from './components/GenomicDetail.tsx';
 import WearableData from './components/WearableData.tsx';
 import ClinicalTrials from './components/ClinicalTrials.tsx';
 import Financials from './components/Financials.tsx';
+import PublicHealth from './components/PublicHealth.tsx';
 
 const App: React.FC = () => {
   const [view, setView] = useState<View>('dashboard');
@@ -102,6 +102,8 @@ const App: React.FC = () => {
         return <ClinicalTrials />;
       case 'financials':
         return <Financials />;
+      case 'public-health':
+        return <PublicHealth />;
       default:
         return <Dashboard />;
     }
@@ -109,10 +111,10 @@ const App: React.FC = () => {
 
   return (
     <div className={isDarkMode ? 'dark' : ''}>
-      <div className="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 min-h-screen flex">
+      <div className="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 flex h-screen">
         <Sidebar currentView={view} navigate={navigate} />
-        <div className="flex-1 flex flex-col">
-           <header className="bg-white dark:bg-gray-800 shadow-sm p-4 flex justify-between items-center sticky top-0 z-40">
+        <div className="flex-1 flex flex-col overflow-y-hidden">
+           <header className="bg-white dark:bg-gray-800 shadow-sm p-4 flex justify-between items-center flex-shrink-0 z-40">
             <div>
               {/* Breadcrumbs or Title could go here */}
             </div>

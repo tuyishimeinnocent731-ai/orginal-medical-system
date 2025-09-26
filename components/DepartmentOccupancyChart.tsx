@@ -36,8 +36,8 @@ const DepartmentOccupancyChart: React.FC = () => {
                         fill="#8884d8"
                         dataKey="value"
                         nameKey="name"
-                        // FIX: The `percent` property can be undefined. Coalesce to 0 before calculation.
-                        label={({ name, percent }) => `${name} ${((percent || 0) * 100).toFixed(0)}%`}
+                        // FIX: The `percent` property can be undefined. Coalesced to 0 to prevent type errors during arithmetic operations.
+                        label={({ name, percent }) => `${name} ${((percent ?? 0) * 100).toFixed(0)}%`}
                     >
                         {data.map((entry, index) => (
                             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />

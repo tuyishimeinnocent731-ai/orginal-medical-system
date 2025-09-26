@@ -1,4 +1,3 @@
-
 export type View = 
   | 'dashboard'
   | 'patients'
@@ -21,7 +20,8 @@ export type View =
   | 'genomic-detail'
   | 'wearable-data'
   | 'clinical-trials'
-  | 'financials';
+  | 'financials'
+  | 'public-health';
 
 export type Department = 'Cardiology' | 'Neurology' | 'Orthopedics' | 'ICU' | 'Oncology' | 'General Medicine';
 
@@ -180,4 +180,37 @@ export interface ClinicalTrial {
     phase: 'Phase I' | 'Phase II' | 'Phase III' | 'Phase IV';
     status: 'Recruiting' | 'Active' | 'Completed';
     principalInvestigator: string;
+}
+
+export interface RegionalHealthData {
+  regionId: string;
+  regionName: string;
+  population: number;
+  riskIndex: number; // 0-100
+  cases: {
+      respiratory: number;
+      gastrointestinal: number;
+  };
+}
+
+export interface SyndromicTrendData {
+  date: string;
+  respiratory: number;
+  gastrointestinal: number;
+  fever: number;
+}
+
+export interface OutbreakAlert {
+    id: string;
+    disease: string;
+    riskLevel: 'High' | 'Medium' | 'Low';
+    affectedRegions: string[];
+}
+
+export interface OutbreakPredictionResult {
+    prediction: string;
+    confidence: 'High' | 'Medium' | 'Low';
+    predictedDisease: string;
+    predictedRegions: string[];
+    rationale: string;
 }

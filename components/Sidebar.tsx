@@ -1,9 +1,9 @@
-
 import React from 'react';
 import type { View } from '../types.ts';
 import { 
     DashboardIcon, PatientsIcon, AppointmentsIcon, HeartIcon, BillingIcon, StaffIcon, MapIcon, 
-    TelemedicineIcon, SurgeryIcon, PharmacyIcon, LabIcon, UserCircleIcon, DnaIcon, ClipboardIcon, DollarIcon
+    TelemedicineIcon, SurgeryIcon, PharmacyIcon, LabIcon, UserCircleIcon, DnaIcon, ClipboardIcon, DollarIcon,
+    PublicHealthIcon
 } from './IconComponents.tsx';
 
 interface SidebarProps {
@@ -56,6 +56,7 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, navigate }) => {
       { view: 'staff', label: 'Staff', icon: <StaffIcon /> },
       { view: 'map', label: 'Hospital Map', icon: <MapIcon /> },
       { view: 'financials', label: 'Financials', icon: <DollarIcon /> },
+      { view: 'public-health', label: 'Public Health', icon: <PublicHealthIcon /> },
     ],
     diagnostics: [
       { view: 'symptom-checker', label: 'AI Symptom Checker', icon: <HeartIcon /> },
@@ -72,15 +73,15 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, navigate }) => {
   };
 
   return (
-    <aside className="w-64 bg-white dark:bg-gray-800 shadow-md flex-shrink-0 flex flex-col p-4 border-r dark:border-gray-700">
-      <div className="flex items-center mb-8 px-2">
+    <aside className="w-64 bg-white dark:bg-gray-800 shadow-md flex-shrink-0 flex flex-col border-r dark:border-gray-700">
+      <div className="p-4 flex items-center flex-shrink-0">
         <div className="p-2 bg-blue-600 rounded-lg">
            <HeartIcon className="w-6 h-6 text-white"/>
         </div>
         <h1 className="text-xl font-bold ml-3 text-gray-800 dark:text-white">HealthSys AI</h1>
       </div>
       
-      <nav className="flex-1 space-y-6 overflow-y-auto">
+      <nav className="flex-1 space-y-6 overflow-y-auto p-4">
         <NavSection title="Clinical">
             {navItems.clinical.map(item => (
                 <NavLink key={item.view} label={item.label} icon={item.icon} isActive={currentView === item.view} onClick={() => navigate(item.view)} />

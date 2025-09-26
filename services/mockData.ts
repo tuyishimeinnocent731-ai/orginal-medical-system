@@ -1,5 +1,4 @@
-
-import type { Patient, Staff, Appointment, Invoice, Surgery, Notification, ChatContact, ChatMessage, Prescription, LabResult, VirtualConsultation, GenomicVariant, ClinicalTrial } from '../types.ts';
+import type { Patient, Staff, Appointment, Invoice, Surgery, Notification, ChatContact, ChatMessage, Prescription, LabResult, VirtualConsultation, GenomicVariant, ClinicalTrial, RegionalHealthData, SyndromicTrendData, OutbreakAlert } from '../types.ts';
 
 export const mockPatients: Patient[] = [
   {
@@ -177,4 +176,26 @@ export const mockClinicalTrials: ClinicalTrial[] = [
     { id: 'CT002', title: 'Targeted Therapy for Glioblastoma Multiforme', phase: 'Phase II', status: 'Active', principalInvestigator: 'Dr. Ben Stone' },
     { id: 'CT003', title: 'Immunotherapy in Early-Stage Lung Cancer', phase: 'Phase III', status: 'Active', principalInvestigator: 'Dr. Evelyn Reed' },
     { id: 'CT004', title: 'Long-term Outcomes of Robotic Knee Surgery', phase: 'Phase IV', status: 'Completed', principalInvestigator: 'Dr. David Green' },
+];
+
+export const mockRegionalHealthData: RegionalHealthData[] = [
+    { regionId: 'R1', regionName: 'North District', population: 150000, riskIndex: 35, cases: { respiratory: 120, gastrointestinal: 45 } },
+    { regionId: 'R2', regionName: 'Westside', population: 250000, riskIndex: 78, cases: { respiratory: 350, gastrointestinal: 110 } },
+    { regionId: 'R3', regionName: 'Downtown', population: 80000, riskIndex: 60, cases: { respiratory: 90, gastrointestinal: 85 } },
+    { regionId: 'R4', regionName: 'East Suburbs', population: 320000, riskIndex: 20, cases: { respiratory: 150, gastrointestinal: 60 } },
+];
+
+export const mockSyndromicTrends: SyndromicTrendData[] = [
+    { date: 'Wk 1', respiratory: 50, gastrointestinal: 20, fever: 30 },
+    { date: 'Wk 2', respiratory: 55, gastrointestinal: 22, fever: 35 },
+    { date: 'Wk 3', respiratory: 65, gastrointestinal: 25, fever: 40 },
+    { date: 'Wk 4', respiratory: 90, gastrointestinal: 30, fever: 55 },
+    { date: 'Wk 5', respiratory: 150, gastrointestinal: 40, fever: 80 },
+    { date: 'Wk 6', respiratory: 220, gastrointestinal: 45, fever: 110 },
+    { date: 'Wk 7', respiratory: 280, gastrointestinal: 50, fever: 140 },
+];
+
+export const mockOutbreakAlerts: OutbreakAlert[] = [
+    { id: 'AL01', disease: 'Influenza A', riskLevel: 'High', affectedRegions: ['Westside', 'Downtown'] },
+    { id: 'AL02', disease: 'Norovirus', riskLevel: 'Medium', affectedRegions: ['Downtown'] },
 ];

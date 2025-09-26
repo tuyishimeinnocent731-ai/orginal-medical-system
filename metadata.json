@@ -1,4 +1,5 @@
 {
-  "name": "MediSync - Advanced Hospital Management System",
-  "description": "A comprehensive hospital management system with modules for patients, appointments, billing, staff, pharmacy, laboratory, an interactive map, and an AI symptom checker."
+  "name": "HealthSys AI - Advanced Hospital & Public Health Management",
+  "description": "A comprehensive, AI-powered hospital management system with advanced features including patient management, telemedicine, e-pharmacy, online payments, genomics, IoT integration, robotic pharmacy automation, clinical trial matching, financial analytics, and a public health epidemiology dashboard.",
+  "requestFramePermissions": []
 }
