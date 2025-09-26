@@ -2,7 +2,7 @@
 
 MediDash is a modern, comprehensive, and interactive hospital management system designed to streamline clinical workflows and improve patient care. It provides a centralized platform for managing patients, staff, appointments, billing, and various specialized hospital departments. A key feature of MediDash is its integration with the Google Gemini API to provide AI-powered insights, such as symptom analysis.
 
-[![Open in AI Studio](https://img.shields.io/badge/Open%20in-AI%20Studio-blue?logo=google&logoColor=white)](https://aistudio.google.com/app)
+[![Open in AI Studio](https://img.shields.io/badge/Open%20in-AI%20Studio-blue?logo=google&logoColor=white)](https://aistudio.google.com/apps/drive/1U-lCmiekCeDxLSycCcXxFyGcNCCyvhmi?showPreview=true&showAssistant=true)
 
 ---
 
@@ -36,22 +36,38 @@ MediDash is packed with features designed for a modern healthcare environment:
 
 ---
 
+## 🚀 How to Use MediDash
+
+This application is designed to run in a browser-based environment like Google's AI Studio.
+
+### 1. Getting Started
+*   Click the **"Open in AI Studio"** badge at the top of this README to launch the application.
+*   The application will load with mock data, allowing you to explore its features immediately.
+
+### 2. Navigating the Interface
+*   **Sidebar:** On the left, you'll find the main navigation menu. Click on any item (e.g., "Patients", "Billing", "Symptom Checker") to switch to that module.
+*   **Header:** The top bar contains a global search bar, a notification bell, a dark/light mode toggle, and a user profile dropdown.
+
+### 3. Exploring Core Workflows
+*   **View Patient Details:**
+    1.  Navigate to the **Patients** module from the sidebar.
+    2.  You will see a list of all patients.
+    3.  Click the "View" button on any patient's row to open a detailed modal with their admission info, medical timeline, and AI-powered predictions.
+*   **Add a New Patient:**
+    1.  In the **Patients** module, click the "Add Patient" button.
+    2.  Fill out the form in the modal that appears.
+    3.  Click "Save" to add the new patient to the records.
+*   **Analyze Symptoms with AI:**
+    1.  Navigate to the **Symptom Checker** module.
+    2.  **Important:** For this feature to work, you must have a Google Gemini API key. Configure it as an environment variable named `API_KEY` in your project settings.
+    3.  Enter a description of patient symptoms into the text area (e.g., "persistent cough, high fever, and headache for two days").
+    4.  Click the "Analyze Symptoms" button. The Gemini model will process the input and provide a preliminary analysis, including potential diagnoses and recommended next steps.
+
+---
+
 ## 🛠️ Technology Stack
 
 *   **Frontend:** React, TypeScript
 *   **Styling:** Tailwind CSS
 *   **AI Integration:** Google Gemini API (`@google/genai`)
 *   **Data Visualization:** Recharts
-
----
-
-## 🚀 How It Works
-
-This application is designed to run in a browser-based environment like Google's AI Studio.
-
-1.  **Launch the App:** Open the project using the "Open in AI Studio" link above.
-2.  **Explore Modules:** Use the sidebar navigation to explore all the features, from the main dashboard to specialized views like Bed Management and Genomics.
-3.  **Use the AI Symptom Checker:**
-    *   Navigate to the "Symptom Checker" module.
-    *   For this feature to work, you must have a Google Gemini API key. Configure it as an environment variable named `API_KEY` in your project settings.
-    *   Enter patient symptoms into the text area and click "Analyze" to see insights from the Gemini model.
