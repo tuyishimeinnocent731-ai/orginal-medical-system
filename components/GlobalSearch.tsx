@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 const GlobalSearch: React.FC = () => {
@@ -6,8 +5,8 @@ const GlobalSearch: React.FC = () => {
     <div className="relative">
       <input
         type="text"
-        placeholder="Search patients, staff..."
-        className="w-64 pl-10 pr-4 py-2 border rounded-full bg-gray-100 dark:bg-gray-700 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        placeholder="Search..."
+        className="w-32 sm:w-64 pl-10 pr-4 py-2 border rounded-full bg-gray-100 dark:bg-gray-700 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
       />
       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
         <svg className="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">

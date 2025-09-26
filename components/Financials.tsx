@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import StatCard from './StatCard.tsx';
@@ -30,7 +29,7 @@ const Financials: React.FC = () => {
     <div className="space-y-6">
       <h1 className="text-3xl font-bold">Financials</h1>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <StatCard title="Total Revenue (YTD)" value="$2.7M" change="+12%" changeType="increase" icon={<FinancialsIcon className="w-6 h-6 text-blue-500" />} />
         <StatCard title="Total Expenses (YTD)" value="$1.9M" change="+8%" changeType="increase" icon={<FinancialsIcon className="w-6 h-6 text-blue-500" />} />
         <StatCard title="Net Profit (YTD)" value="$800K" change="+21%" changeType="increase" icon={<FinancialsIcon className="w-6 h-6 text-blue-500" />} />
@@ -44,8 +43,8 @@ const Financials: React.FC = () => {
             <LineChart data={revenueData}>
               <CartesianGrid strokeDasharray="3 3" stroke={gridColor} />
               <XAxis dataKey="name" tick={{ fill: tickColor }} />
-              <YAxis tick={{ fill: tickColor }} />
-              <Tooltip contentStyle={{ backgroundColor: isDarkMode ? '#374151' : '#fff' }} />
+              <YAxis tick={{ fill: tickColor, fontSize: 12 }} tickFormatter={(value) => `$${Number(value) / 1000}k`} />
+              <Tooltip contentStyle={{ backgroundColor: isDarkMode ? '#374151' : '#fff' }} formatter={(value: number) => `$${value.toLocaleString()}`} />
               <Legend />
               <Line type="monotone" dataKey="revenue" stroke="#3B82F6" />
               <Line type="monotone" dataKey="expenses" stroke="#EF4444" />
@@ -55,13 +54,12 @@ const Financials: React.FC = () => {
         <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md h-96">
           <h3 className="text-lg font-semibold mb-4">Costs by Department</h3>
           <ResponsiveContainer width="100%" height="90%">
-            <BarChart data={departmentCostData} layout="vertical">
-              <CartesianGrid strokeDasharray="3 3" stroke={gridColor} />
-              <XAxis type="number" tick={{ fill: tickColor }} />
-              <YAxis type="category" dataKey="name" width={80} tick={{ fill: tickColor }} />
-              <Tooltip contentStyle={{ backgroundColor: isDarkMode ? '#374151' : '#fff' }} />
-              <Legend />
-              <Bar dataKey="cost" fill="#10B981" />
+            <BarChart data={departmentCostData} layout="vertical" margin={{ left: 10, right: 20 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke={gridColor} horizontal={false} />
+              <XAxis type="number" tick={{ fill: tickColor, fontSize: 12 }} tickFormatter={(value) => `$${Number(value) / 1000}k`} />
+              <YAxis type="category" dataKey="name" width={80} tick={{ fill: tickColor, fontSize: 12 }} />
+              <Tooltip contentStyle={{ backgroundColor: isDarkMode ? '#374151' : '#fff' }} formatter={(value: number) => `$${value.toLocaleString()}`} />
+              <Bar dataKey="cost" fill="#10B981" barSize={20} />
             </BarChart>
           </ResponsiveContainer>
         </div>

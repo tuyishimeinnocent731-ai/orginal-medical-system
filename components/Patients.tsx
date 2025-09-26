@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from 'react';
 import { mockPatients } from '../services/mockData.ts';
 import type { Patient } from '../types.ts';
@@ -50,9 +49,9 @@ const Patients: React.FC = () => {
 
     return (
         <div className="space-y-6">
-            <div className="flex justify-between items-center">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <h1 className="text-3xl font-bold">Patient Records</h1>
-                <button onClick={() => handleOpenForm()} className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Add Patient</button>
+                <button onClick={() => handleOpenForm()} className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 w-full sm:w-auto">Add Patient</button>
             </div>
              <input
                 type="text"
@@ -66,9 +65,9 @@ const Patients: React.FC = () => {
                     <thead className="border-b dark:border-gray-700">
                         <tr>
                             <th className="p-3">Name</th>
-                            <th className="p-3">Age</th>
-                            <th className="p-3">Department</th>
-                            <th className="p-3">Bed</th>
+                            <th className="p-3 hidden sm:table-cell">Age</th>
+                            <th className="p-3 hidden md:table-cell">Department</th>
+                            <th className="p-3 hidden md:table-cell">Bed</th>
                             <th className="p-3">Status</th>
                             <th className="p-3">Actions</th>
                         </tr>
@@ -77,15 +76,15 @@ const Patients: React.FC = () => {
                         {filteredPatients.map(patient => (
                             <tr key={patient.id} className="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50">
                                 <td className="p-3 font-medium">{patient.name}</td>
-                                <td className="p-3">{patient.age}</td>
-                                <td className="p-3">{patient.department}</td>
-                                <td className="p-3">{patient.bedNumber}</td>
+                                <td className="p-3 hidden sm:table-cell">{patient.age}</td>
+                                <td className="p-3 hidden md:table-cell">{patient.department}</td>
+                                <td className="p-3 hidden md:table-cell">{patient.bedNumber}</td>
                                 <td className="p-3">
                                      <span className={`px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(patient.status)}`}>
                                         {patient.status}
                                     </span>
                                 </td>
-                                <td className="p-3 space-x-2">
+                                <td className="p-3 space-x-2 whitespace-nowrap">
                                     <button onClick={() => handleOpenDetail(patient)} className="text-blue-600 hover:underline">View</button>
                                     <button onClick={() => handleOpenForm(patient)} className="text-green-600 hover:underline">Edit</button>
                                 </td>
