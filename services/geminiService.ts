@@ -1,42 +1,47 @@
-// FIX: Created this file to handle interactions with the Gemini API.
+
 import { GoogleGenAI } from "@google/genai";
 
-// FIX: Initialize GoogleGenAI with a named apiKey parameter as required.
-// API key is sourced from environment variables for security.
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+// As per guidelines, the API key must be sourced from `process.env.API_KEY`.
+// The application assumes this environment variable is pre-configured and accessible.
+const apiKey = process.env.API_KEY;
 
-/**
- * Gets a preliminary symptom analysis from the Gemini model.
- * @param symptoms A string describing the patient's symptoms.
- * @returns A string containing the model's analysis.
- */
-export const getSymptomAnalysis = async (symptoms: string): Promise<string> => {
-  if (!symptoms || symptoms.trim() === '') {
-    return "Please enter some symptoms to analyze.";
+let ai: GoogleGenAI | null = null;
+if (apiKey) {
+  ai = new GoogleGenAI({ apiKey });
+}
+
+export const isGeminiConfigured = (): boolean => {
+    return !!ai;
+}
+
+export const analyzeSymptoms = async (symptoms: string): Promise<string> => {
+  if (!ai) {
+    return "Gemini API is not configured. Please ensure the API_KEY is set in your environment variables.";
   }
 
   try {
-    // FIX: A detailed prompt to guide the model's response for a medical context.
-    const prompt = `
-      Analyze the following symptoms for a preliminary assessment for a medical professional.
-      This is for informational purposes and is NOT a diagnosis.
-      Provide a list of 3-5 possible conditions, a brief explanation for each,
-      and suggest whether the situation is likely non-urgent, requires a doctor's visit, or is a potential emergency.
-      Keep the language clear and professional. Format the output in markdown.
-
-      Symptoms: "${symptoms}"
-    `;
-
-    // FIX: Use ai.models.generateContent with the correct model and prompt structure as per guidelines.
+    const prompt = `A user has reported the following symptoms: "${symptoms}". 
+    Based on these symptoms, provide a brief, easy-to-understand potential analysis for a hospital dashboard interface.
+    
+    Structure the output as follows:
+    1.  **Potential Conditions:** List a few possibilities.
+    2.  **Severity Assessment:** Suggest whether they should seek immediate medical attention (e.g., visit an ER), schedule a doctor's visit, or if it seems non-urgent.
+    3.  **Recommended Next Steps:** Provide some general advice.
+    
+    Include the following disclaimer at the very end: "Disclaimer: This is an AI-generated analysis for informational purposes only and is not a medical diagnosis. Consult a healthcare professional for any health concerns."`;
+    
     const response = await ai.models.generateContent({
       model: 'gemini-2.5-flash',
       contents: prompt,
+      config: {
+        systemInstruction: "You are a helpful medical assistant providing preliminary information based on user-reported symptoms. Your analysis is for informational purposes only and is not a substitute for professional medical advice, diagnosis, or treatment. Your tone should be helpful and cautious.",
+        temperature: 0.5,
+      }
     });
-    
-    // FIX: Access the generated text directly from the response.text property.
+
     return response.text;
   } catch (error) {
-    console.error("Error getting symptom analysis:", error);
-    return "Sorry, there was an error communicating with the AI service. Please check your connection and API key, then try again.";
+    console.error("Error analyzing symptoms with Gemini API:", error);
+    return "An error occurred while analyzing symptoms. Please try again later or consult a healthcare professional directly.";
   }
 };
