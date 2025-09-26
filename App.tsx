@@ -19,6 +19,9 @@ import BedManagement from './components/BedManagement.tsx';
 import Inventory from './components/Inventory.tsx';
 import Financials from './components/Financials.tsx';
 import Payroll from './components/Payroll.tsx';
+import LandingPage from './components/auth/LandingPage.tsx';
+import Login from './components/auth/Login.tsx';
+import Register from './components/auth/Register.tsx';
 
 const App: React.FC = () => {
   const [isDarkMode, setIsDarkMode] = useState(() => {
@@ -29,6 +32,7 @@ const App: React.FC = () => {
   });
 
   const [currentView, setCurrentView] = useState('Dashboard');
+  const [authState, setAuthState] = useState<'landing' | 'login' | 'register' | 'authenticated'>('landing');
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -45,6 +49,10 @@ const App: React.FC = () => {
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
   };
+  
+  const handleLogout = () => {
+      setAuthState('landing');
+  }
 
   const renderView = () => {
     switch (currentView) {
@@ -86,12 +94,25 @@ const App: React.FC = () => {
         return <Dashboard />;
     }
   };
+  
+  if (authState === 'landing') {
+      return <LandingPage onNavigateToLogin={() => setAuthState('login')} onNavigateToRegister={() => setAuthState('register')} />;
+  }
+  
+  if (authState === 'login') {
+      return <Login onLoginSuccess={() => setAuthState('authenticated')} onNavigateToRegister={() => setAuthState('register')} />;
+  }
+  
+  if (authState === 'register') {
+      return <Register onRegisterSuccess={() => setAuthState('authenticated')} onNavigateToLogin={() => setAuthState('login')} />;
+  }
+
 
   return (
     <div className={`flex h-screen bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200`}>
       <Sidebar currentView={currentView} setView={setCurrentView} />
       <div className="flex-1 flex flex-col overflow-hidden">
-        <Header toggleDarkMode={toggleDarkMode} isDarkMode={isDarkMode} />
+        <Header toggleDarkMode={toggleDarkMode} isDarkMode={isDarkMode} onLogout={handleLogout} />
         <main className="flex-1 overflow-x-hidden overflow-y-auto p-6">
           {renderView()}
         </main>

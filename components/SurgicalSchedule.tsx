@@ -1,3 +1,4 @@
+
 // FIX: Created this file to define the SurgicalSchedule component.
 import React, { useState } from 'react';
 // FIX: Added file extensions to imports of 'mockData' and 'types' to resolve module not found errors.
@@ -20,10 +21,10 @@ const SurgicalSchedule: React.FC = () => {
     
      const getStatusColor = (status: Surgery['status']) => {
         switch (status) {
-            case 'Scheduled': return 'bg-blue-100 text-blue-800';
-            case 'In Progress': return 'bg-yellow-100 text-yellow-800';
-            case 'Completed': return 'bg-green-100 text-green-800';
-            case 'Cancelled': return 'bg-gray-100 text-gray-800';
+            case 'Scheduled': return 'bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-200';
+            case 'In Progress': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-200';
+            case 'Completed': return 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-200';
+            case 'Cancelled': return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
         }
     };
 
@@ -42,7 +43,7 @@ const SurgicalSchedule: React.FC = () => {
                             <th className="p-3 hidden sm:table-cell">Surgeon</th>
                             <th className="p-3">Date & Time</th>
                             <th className="p-3 hidden md:table-cell">OR</th>
-                            <th className="p-3 hidden md:table-cell">Status</th>
+                            <th className="p-3">Status</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -53,7 +54,7 @@ const SurgicalSchedule: React.FC = () => {
                                 <td className="p-3 hidden sm:table-cell">{surgery.surgeon}</td>
                                 <td className="p-3 whitespace-nowrap">{surgery.date} @ {surgery.startTime}</td>
                                 <td className="p-3 hidden md:table-cell">{surgery.operatingRoom}</td>
-                                <td className="p-3 hidden md:table-cell">
+                                <td className="p-3">
                                      <span className={`px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(surgery.status)}`}>
                                         {surgery.status}
                                     </span>

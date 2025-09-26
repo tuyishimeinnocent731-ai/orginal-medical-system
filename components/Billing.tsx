@@ -20,17 +20,17 @@ const Billing: React.FC = () => {
 
     const getStatusColor = (status: Invoice['status']) => {
         switch (status) {
-            case 'Paid': return 'bg-green-100 text-green-800';
-            case 'Pending': return 'bg-yellow-100 text-yellow-800';
-            case 'Overdue': return 'bg-red-100 text-red-800';
+            case 'Paid': return 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-200';
+            case 'Pending': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-200';
+            case 'Overdue': return 'bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-200';
         }
     };
     
     return (
         <div className="space-y-6">
-            <div className="flex justify-between items-center">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <h1 className="text-3xl font-bold">Billing</h1>
-                <button onClick={() => setIsFormOpen(true)} className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Create Invoice</button>
+                <button onClick={() => setIsFormOpen(true)} className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 w-full sm:w-auto">Create Invoice</button>
             </div>
             <div className="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-md overflow-x-auto">
                 <table className="w-full text-left">
@@ -38,7 +38,7 @@ const Billing: React.FC = () => {
                         <tr>
                             <th className="p-3">Invoice ID</th>
                             <th className="p-3">Patient</th>
-                            <th className="p-3">Date</th>
+                            <th className="p-3 hidden sm:table-cell">Date</th>
                             <th className="p-3">Amount</th>
                             <th className="p-3">Status</th>
                         </tr>
@@ -48,7 +48,7 @@ const Billing: React.FC = () => {
                             <tr key={invoice.id} className="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50">
                                 <td className="p-3 font-medium font-mono">{invoice.id}</td>
                                 <td className="p-3">{invoice.patientName} ({invoice.patientId})</td>
-                                <td className="p-3">{invoice.date}</td>
+                                <td className="p-3 hidden sm:table-cell">{invoice.date}</td>
                                 <td className="p-3">${invoice.amount.toFixed(2)}</td>
                                 <td className="p-3">
                                     <span className={`px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(invoice.status)}`}>

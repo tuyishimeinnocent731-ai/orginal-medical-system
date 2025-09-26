@@ -9,11 +9,11 @@ const Genomics: React.FC = () => {
     switch (classification) {
       case 'Pathogenic':
       case 'Likely Pathogenic':
-        return 'bg-red-100 text-red-800';
+        return 'bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-200';
       case 'Uncertain':
-        return 'bg-yellow-100 text-yellow-800';
+        return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-200';
       default:
-        return 'bg-green-100 text-green-800';
+        return 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-200';
     }
   };
 
@@ -25,18 +25,18 @@ const Genomics: React.FC = () => {
           <thead className="border-b dark:border-gray-700">
             <tr>
               <th className="p-3">Gene</th>
-              <th className="p-3">Variant</th>
+              <th className="p-3 hidden sm:table-cell">Variant</th>
               <th className="p-3">Implication</th>
-              <th className="p-3">Classification</th>
+              <th className="p-3 hidden md:table-cell">Classification</th>
             </tr>
           </thead>
           <tbody>
             {mockGenomicVariants.map(variant => (
               <tr key={variant.id} className="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50">
                 <td className="p-3 font-medium font-mono">{variant.gene}</td>
-                <td className="p-3 font-mono">{variant.variant}</td>
-                <td className="p-3">{variant.implication}</td>
-                <td className="p-3">
+                <td className="p-3 font-mono hidden sm:table-cell">{variant.variant}</td>
+                <td className="p-3 text-sm">{variant.implication}</td>
+                <td className="p-3 hidden md:table-cell">
                   <span className={`px-2 py-1 text-xs font-semibold rounded-full ${getClassificationColor(variant.classification)}`}>
                     {variant.classification}
                   </span>

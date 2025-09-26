@@ -19,9 +19,9 @@ const Staff: React.FC = () => {
 
     return (
         <div className="space-y-6">
-            <div className="flex justify-between items-center">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <h1 className="text-3xl font-bold">Staff Management</h1>
-                <button onClick={() => setIsFormOpen(true)} className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Add Staff</button>
+                <button onClick={() => setIsFormOpen(true)} className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 w-full sm:w-auto">Add Staff</button>
             </div>
             <div className="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-md overflow-x-auto">
                 <table className="w-full text-left">
@@ -29,9 +29,9 @@ const Staff: React.FC = () => {
                         <tr>
                             <th className="p-3">Name</th>
                             <th className="p-3">Role</th>
-                            <th className="p-3">Department</th>
+                            <th className="p-3 hidden sm:table-cell">Department</th>
                             <th className="p-3">Status</th>
-                            <th className="p-3">Contact</th>
+                            <th className="p-3 hidden md:table-cell">Contact</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -39,13 +39,13 @@ const Staff: React.FC = () => {
                             <tr key={member.id} className="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50">
                                 <td className="p-3 font-medium">{member.name}</td>
                                 <td className="p-3">{member.role}</td>
-                                <td className="p-3">{member.department}</td>
+                                <td className="p-3 hidden sm:table-cell">{member.department}</td>
                                 <td className="p-3">
-                                    <span className={`px-2 py-1 text-xs font-semibold rounded-full ${member.onCall ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>
+                                    <span className={`px-2 py-1 text-xs font-semibold rounded-full ${member.onCall ? 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-200' : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'}`}>
                                         {member.onCall ? 'On Call' : 'Off Duty'}
                                     </span>
                                 </td>
-                                <td className="p-3 text-sm">{member.email}</td>
+                                <td className="p-3 text-sm hidden md:table-cell">{member.email}</td>
                             </tr>
                         ))}
                     </tbody>
