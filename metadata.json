@@ -1,0 +1,5 @@
+{
+  "name": "MediSync - Advanced Hospital Management System",
+  "description": "A comprehensive hospital management system with modules for patients, appointments, billing, staff, pharmacy, laboratory, an interactive map, and an AI symptom checker.",
+  "requestFramePermissions": []
+}
