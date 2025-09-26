@@ -1,47 +1,54 @@
 
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenAI, GenerateContentResponse } from "@google/genai";
 
-// As per guidelines, the API key must be sourced from `process.env.API_KEY`.
-// The application assumes this environment variable is pre-configured and accessible.
-const apiKey = process.env.API_KEY;
+// The API key is handled by the environment variable `process.env.API_KEY`.
+// This function checks if the key is present.
+export const isGeminiConfigured = (): boolean => {
+  // This is a simplified check for client-side code.
+  // In a real app, you would likely have a more robust way to manage this,
+  // potentially checking a config object initialized at startup.
+  // For this project, we assume the variable is either present or not.
+  // A placeholder check as `process.env` is not directly available in browser like in Node.
+  // We will rely on a placeholder value for the purpose of this exercise.
+  // To use the actual API, replace this with a secure key management solution.
+  return !!process.env.API_KEY;
+};
 
 let ai: GoogleGenAI | null = null;
-if (apiKey) {
-  ai = new GoogleGenAI({ apiKey });
-}
 
-export const isGeminiConfigured = (): boolean => {
-    return !!ai;
+// Initialize the GoogleGenAI client
+const getGenAI = (): GoogleGenAI => {
+    if (!ai) {
+        if (!process.env.API_KEY) {
+            console.error("API_KEY environment variable not set.");
+            throw new Error("API_KEY environment variable not set.");
+        }
+        ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    }
+    return ai;
 }
 
 export const analyzeSymptoms = async (symptoms: string): Promise<string> => {
-  if (!ai) {
-    return "Gemini API is not configured. Please ensure the API_KEY is set in your environment variables.";
-  }
+    if (!isGeminiConfigured()) {
+        console.error("Gemini API key not configured.");
+        return "Gemini API is not configured. Please set the API_KEY environment variable.";
+    }
+    const genAI = getGenAI();
 
-  try {
-    const prompt = `A user has reported the following symptoms: "${symptoms}". 
-    Based on these symptoms, provide a brief, easy-to-understand potential analysis for a hospital dashboard interface.
-    
-    Structure the output as follows:
-    1.  **Potential Conditions:** List a few possibilities.
-    2.  **Severity Assessment:** Suggest whether they should seek immediate medical attention (e.g., visit an ER), schedule a doctor's visit, or if it seems non-urgent.
-    3.  **Recommended Next Steps:** Provide some general advice.
-    
-    Include the following disclaimer at the very end: "Disclaimer: This is an AI-generated analysis for informational purposes only and is not a medical diagnosis. Consult a healthcare professional for any health concerns."`;
-    
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
-      contents: prompt,
-      config: {
-        systemInstruction: "You are a helpful medical assistant providing preliminary information based on user-reported symptoms. Your analysis is for informational purposes only and is not a substitute for professional medical advice, diagnosis, or treatment. Your tone should be helpful and cautious.",
-        temperature: 0.5,
-      }
-    });
+    const prompt = `Analyze the following patient symptoms and provide a brief, potential differential diagnosis, list possible next steps for investigation (like specific tests), and mention any red flag symptoms. Format the output clearly with sections. Do not provide a definitive diagnosis. This is for informational purposes for a medical professional. Symptoms: "${symptoms}"`;
 
-    return response.text;
-  } catch (error) {
-    console.error("Error analyzing symptoms with Gemini API:", error);
-    return "An error occurred while analyzing symptoms. Please try again later or consult a healthcare professional directly.";
-  }
+    try {
+        const response: GenerateContentResponse = await genAI.models.generateContent({
+            model: 'gemini-2.5-flash',
+            contents: prompt,
+            config: {
+                systemInstruction: "You are a helpful medical assistant providing preliminary analysis for healthcare professionals. Your insights are not a substitute for a doctor's diagnosis.",
+                temperature: 0.5,
+            }
+        });
+        return response.text;
+    } catch (error) {
+        console.error("Error analyzing symptoms with Gemini:", error);
+        throw new Error("Failed to get analysis from Gemini API.");
+    }
 };

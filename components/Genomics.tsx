@@ -1,26 +1,49 @@
-// FIX: Created this file to define the Genomics component.
+
 import React from 'react';
-import { mockGenomicData } from '../services/mockData.ts';
+import { mockGenomicVariants } from '../services/mockData.ts';
+import type { GenomicVariant } from '../types.ts';
 
 const Genomics: React.FC = () => {
+  const getClassificationColor = (classification: GenomicVariant['classification']) => {
+    switch (classification) {
+      case 'Pathogenic':
+      case 'Likely Pathogenic':
+        return 'bg-red-100 text-red-800';
+      case 'Uncertain':
+        return 'bg-yellow-100 text-yellow-800';
+      default:
+        return 'bg-green-100 text-green-800';
+    }
+  };
+
   return (
-    <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md">
-      <h2 className="text-xl font-semibold mb-4">Genomic Data Overview</h2>
-      <div className="space-y-4">
-        {mockGenomicData.map(data => (
-          <div key={data.id} className="bg-gray-50 dark:bg-gray-900/50 p-4 rounded-lg">
-            <h3 className="font-bold text-lg">{data.patientName}</h3>
-            <p className="text-sm text-gray-500 dark:text-gray-400">Sequence ID: {data.sequenceId}</p>
-            <p className="mt-2">{data.summary}</p>
-            <div className="mt-2">
-              <h4 className="font-semibold">Key Markers:</h4>
-              <ul className="list-disc list-inside text-sm">
-                {data.markers.map(m => <li key={m.marker}>{m.marker}: <span className="font-mono">{m.value}</span></li>)}
-              </ul>
-            </div>
-            <button className="text-blue-600 dark:text-blue-400 hover:underline mt-2">View Full Report</button>
-          </div>
-        ))}
+    <div className="space-y-6">
+      <h1 className="text-3xl font-bold">Genomics Data</h1>
+      <div className="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-md overflow-x-auto">
+        <table className="w-full text-left">
+          <thead className="border-b dark:border-gray-700">
+            <tr>
+              <th className="p-3">Gene</th>
+              <th className="p-3">Variant</th>
+              <th className="p-3">Implication</th>
+              <th className="p-3">Classification</th>
+            </tr>
+          </thead>
+          <tbody>
+            {mockGenomicVariants.map(variant => (
+              <tr key={variant.id} className="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                <td className="p-3 font-medium font-mono">{variant.gene}</td>
+                <td className="p-3 font-mono">{variant.variant}</td>
+                <td className="p-3">{variant.implication}</td>
+                <td className="p-3">
+                  <span className={`px-2 py-1 text-xs font-semibold rounded-full ${getClassificationColor(variant.classification)}`}>
+                    {variant.classification}
+                  </span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );

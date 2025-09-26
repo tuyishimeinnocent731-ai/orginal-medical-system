@@ -1,109 +1,75 @@
-import type { 
-  Patient, 
-  Staff, 
-  Appointment, 
-  Invoice, 
-  Notification,
-  Surgery,
-  Prescription,
-  LabResult,
-  ImagingStudy,
-  TimelineEvent,
-  Bed,
-  Ambulance,
-  VirtualConsultation,
-  GenomicData,
-  ClinicalTrial,
-  FinancialRecord,
-  PublicHealthData,
-  Resource,
-  AuditLogEntry
-} from '../types.ts';
+
+import type { Patient, Appointment, Staff, Notification, Surgery, LabResult, Invoice, Bed, Resource, AuditLogEntry, Medication, GenomicVariant, ImagingStudy } from '../types.ts';
 
 export const mockPatients: Patient[] = [
-  { id: 'P001', name: 'John Doe', age: 45, gender: 'Male', admissionDate: '2023-10-01', department: 'Cardiology', bedNumber: 'C-101', status: 'Critical', bloodType: 'O+', vitals: { heartRate: [88, 90, 92, 89, 94, 91, 93], spO2: [95, 96, 95, 97, 96, 95, 96] }, timeline: [{id: 'T01', date: '2023-10-01', title: 'Admission', description: 'Admitted for chest pain.', type: 'Admission'}] },
-  { id: 'P002', name: 'Jane Smith', age: 34, gender: 'Female', admissionDate: '2023-10-02', department: 'Neurology', bedNumber: 'N-203', status: 'Stable', bloodType: 'A-', timeline: [{id: 'T02', date: '2023-10-02', title: 'Admission', description: 'Admitted for severe migraines.', type: 'Admission'}]},
-  { id: 'P003', name: 'Robert Johnson', age: 62, gender: 'Male', admissionDate: '2023-09-28', department: 'Oncology', bedNumber: 'O-305', status: 'Stable', bloodType: 'B+' },
-  { id: 'P004', name: 'Emily White', age: 28, gender: 'Female', admissionDate: '2023-10-03', department: 'Orthopedics', bedNumber: 'OR-112', status: 'Stable', bloodType: 'AB+' },
-  { id: 'P005', name: 'Michael Brown', age: 71, gender: 'Male', admissionDate: '2023-09-25', department: 'Cardiology', bedNumber: 'C-102', status: 'Discharged', bloodType: 'A+' },
-  { id: 'P006', name: 'Jessica Davis', age: 8, gender: 'Female', admissionDate: '2023-10-04', department: 'Pediatrics', bedNumber: 'P-401', status: 'Critical', bloodType: 'O-', vitals: { heartRate: [110, 112, 115, 113, 118, 116, 117], spO2: [97, 98, 97, 99, 98, 97, 98] } },
-];
-
-export const mockStaff: Staff[] = [
-  { id: 'S001', name: 'Dr. Emily Carter', role: 'Doctor', department: 'Cardiology', onCall: true, phone: '555-0101', email: 'ecarter@medidash.com' },
-  { id: 'S002', name: 'James Wilson', role: 'Nurse', department: 'Neurology', onCall: false, phone: '555-0102', email: 'jwilson@medidash.com' },
-  { id: 'S003', name: 'Dr. Olivia Martinez', role: 'Surgeon', department: 'Orthopedics', onCall: true, phone: '555-0103', email: 'omartinez@medidash.com' },
+  { id: 'P001', name: 'John Doe', age: 45, gender: 'Male', bloodType: 'O+', admissionDate: '2023-10-01', department: 'Cardiology', bedNumber: 'C-101', status: 'Stable', timeline: [{id: 'T01', date: '2023-10-01', type: 'Admission', title: 'Admitted', description: 'Admitted for chest pain.'}], vitals: { heartRate: [72, 75, 74], spO2: [98, 99, 98] } },
+  { id: 'P002', name: 'Jane Smith', age: 62, gender: 'Female', bloodType: 'A-', admissionDate: '2023-09-28', department: 'Neurology', bedNumber: 'N-203', status: 'Critical', timeline: [{id: 'T02', date: '2023-09-28', type: 'Admission', title: 'Admitted', description: 'Admitted post-stroke.'}], vitals: { heartRate: [88, 90, 92], spO2: [95, 94, 95] } },
+  { id: 'P003', name: 'Robert Johnson', age: 33, gender: 'Male', bloodType: 'B+', admissionDate: '2023-10-02', department: 'Oncology', bedNumber: 'O-305', status: 'Stable', timeline: [{id: 'T03', date: '2023-10-02', type: 'Admission', title: 'Admitted', description: 'Scheduled chemotherapy.'}] },
+  { id: 'P004', name: 'Emily White', age: 78, gender: 'Female', bloodType: 'AB+', admissionDate: '2023-09-30', department: 'Cardiology', bedNumber: 'C-102', status: 'Discharged' },
 ];
 
 export const mockAppointments: Appointment[] = [
-  { id: 'APP001', patientName: 'John Doe', doctorName: 'Dr. Carter', date: '2023-10-10', time: '10:00 AM', type: 'Follow-up', status: 'Scheduled' },
-  { id: 'APP002', patientName: 'Jane Smith', doctorName: 'Dr. Chen', date: '2023-10-11', time: '11:30 AM', type: 'Consultation', status: 'Scheduled' },
-  { id: 'APP003', patientName: 'Robert Johnson', doctorName: 'Dr. Lee', date: '2023-10-09', time: '02:00 PM', type: 'Procedure', status: 'Completed' },
+  { id: 'APP001', patientName: 'Michael Brown', doctorName: 'Dr. Davis', date: '2023-10-15', time: '10:00 AM', type: 'Consultation', status: 'Scheduled' },
+  { id: 'APP002', patientName: 'Sarah Wilson', doctorName: 'Dr. Miller', date: '2023-10-12', time: '02:30 PM', type: 'Follow-up', status: 'Completed' },
+  { id: 'APP003', patientName: 'David Lee', doctorName: 'Dr. Garcia', date: '2023-10-11', time: '11:00 AM', type: 'Check-up', status: 'Canceled' },
 ];
 
-export const mockInvoices: Invoice[] = [
-  { id: 'INV001', patientName: 'John Doe', patientId: 'P001', date: '2023-10-05', amount: 1250.75, status: 'Pending' },
-  { id: 'INV002', patientName: 'Jane Smith', patientId: 'P002', date: '2023-10-05', amount: 850.00, status: 'Paid' },
-  { id: 'INV003', patientName: 'Michael Brown', patientId: 'P005', date: '2023-09-30', amount: 2500.00, status: 'Overdue' },
+export const mockStaff: Staff[] = [
+  { id: 'S001', name: 'Dr. Emily Carter', role: 'Doctor', department: 'Cardiology', onCall: true, phone: '555-1234', email: 'ecarter@med.com' },
+  { id: 'S002', name: 'Mark Evans', role: 'Nurse', department: 'Neurology', onCall: false, phone: '555-5678', email: 'mevans@med.com' },
+  { id: 'S003', name: 'Dr. Alan Grant', role: 'Surgeon', department: 'Oncology', onCall: true, phone: '555-8765', email: 'agrant@med.com' },
 ];
 
 export const mockNotifications: Notification[] = [
-  { id: 'N001', type: 'alert', message: 'Patient P001 vitals are unstable.', timestamp: '2 mins ago', read: false },
-  { id: 'N002', type: 'billing', message: 'Invoice INV003 for Michael Brown is overdue.', timestamp: '1 hour ago', read: false },
-  { id: 'N003', type: 'surgery', message: 'Surgery for Emily White scheduled for tomorrow.', timestamp: '3 hours ago', read: true },
-  { id: 'N004', type: 'message', message: 'New message from Dr. Wilson.', timestamp: 'Yesterday', read: true },
+  { id: 'N01', type: 'alert', message: 'Patient John Doe (P001) has critical lab results.', timestamp: '2 mins ago', read: false },
+  { id: 'N02', type: 'message', message: 'New message from Dr. Smith regarding patient P002.', timestamp: '15 mins ago', read: false },
+  { id: 'N03', type: 'surgery', message: 'Surgery for P003 is scheduled for 3:00 PM.', timestamp: '1 hour ago', read: true },
+  { id: 'N04', type: 'billing', message: 'Invoice #INV004 for P004 is overdue.', timestamp: '3 hours ago', read: true },
 ];
 
 export const mockSurgeries: Surgery[] = [
-  { id: 'SURG001', patientName: 'Emily White', patientId: 'P004', procedure: 'Knee Arthroscopy', surgeon: 'Dr. Olivia Martinez', date: '2023-10-12', startTime: '09:00 AM', endTime: '11:00 AM', operatingRoom: 'OR 1', status: 'Scheduled' },
-];
-
-export const mockPrescriptions: Prescription[] = [
-    { id: 'RX001', patientName: 'John Doe', patientId: 'P001', medicationName: 'Lisinopril', dosage: '10mg', frequency: 'Once a day', duration: '30 days', issueDate: '2023-10-02', status: 'Active' },
+    { id: 'SURG001', patientName: 'Liam Neeson', patientId: 'P005', procedure: 'Appendectomy', surgeon: 'Dr. Alan Grant', date: '2023-10-20', startTime: '09:00', endTime: '10:30', operatingRoom: 'OR 1', status: 'Scheduled' }
 ];
 
 export const mockLabResults: LabResult[] = [
-    { id: 'LR001', patientId: 'P002', patientName: 'Jane Smith', testName: 'Complete Blood Count', result: 'Normal', referenceRange: 'N/A', date: '2023-10-03', status: 'Completed' },
+    { id: 'LR001', patientId: 'P001', patientName: 'John Doe', testName: 'Troponin T', result: '0.03 ng/mL', referenceRange: '< 0.01 ng/mL', date: '2023-10-05', status: 'Completed'}
 ];
 
-export const mockImagingStudies: ImagingStudy[] = [];
+export const mockInvoices: Invoice[] = [
+    { id: 'INV001', patientId: 'P001', patientName: 'John Doe', date: '2023-10-05', amount: 1250.00, status: 'Paid' },
+    { id: 'INV002', patientId: 'P002', patientName: 'Jane Smith', date: '2023-10-02', amount: 3400.50, status: 'Pending' },
+    { id: 'INV003', patientId: 'P004', patientName: 'Emily White', date: '2023-09-25', amount: 850.75, status: 'Overdue' },
+];
+
 export const mockBeds: Bed[] = [
-    { id: 'C-101', ward: 'Cardiology', isOccupied: true, patientId: 'P001', patientName: 'John Doe' },
+    { id: 'C-101', ward: 'Cardiology', isOccupied: true, patientName: 'John Doe' },
     { id: 'C-102', ward: 'Cardiology', isOccupied: false },
-    { id: 'N-203', ward: 'Neurology', isOccupied: true, patientId: 'P002', patientName: 'Jane Smith' },
-];
-export const mockAmbulances: Ambulance[] = [
-    { id: 'AMB-01', status: 'Available', location: 'Station A' },
-    { id: 'AMB-02', status: 'En-route', location: 'Main St.', destination: 'City General' },
-];
-
-export const mockConsultations: VirtualConsultation[] = [
-    { id: 'VC001', patientName: 'Sarah Adams', doctorName: 'Dr. Chen', date: '2023-10-15', time: '03:00 PM', platform: 'Internal App' },
-];
-
-export const mockGenomicData: GenomicData[] = [
-    { id: 'GD001', patientName: 'John Doe', sequenceId: 'SEQ98765', summary: 'Carrier for Factor V Leiden.', markers: [{ marker: 'FVL', value: 'Heterozygous' }] }
-];
-export const mockClinicalTrials: ClinicalTrial[] = [
-    { id: 'CT001', title: 'A Study of a New Drug for Heart Failure', sponsor: 'PharmaCorp', status: 'Recruiting', eligibility: 'Age 50+, History of CHF' }
-];
-
-export const mockFinancialRecords: FinancialRecord[] = [
-    { id: 'FR001', date: '2023-10-01', description: 'Patient Services', amount: 150000, type: 'Revenue' },
-    { id: 'FR002', date: '2023-10-01', description: 'Salaries', amount: 80000, type: 'Expense' },
-];
-
-export const mockPublicHealthData: PublicHealthData[] = [
-    { region: 'North', disease: 'Influenza', cases: 120 },
-    { region: 'South', disease: 'COVID-19', cases: 45 },
+    { id: 'N-203', ward: 'Neurology', isOccupied: true, patientName: 'Jane Smith' },
+    { id: 'O-305', ward: 'Oncology', isOccupied: true, patientName: 'Robert Johnson' },
 ];
 
 export const mockResources: Resource[] = [
     { id: 'RES01', name: 'MRI-01', type: 'MRI Machine', isAvailable: true },
     { id: 'RES02', name: 'VENT-05', type: 'Ventilator', isAvailable: false },
+    { id: 'RES03', name: 'XRAY-02', type: 'X-Ray', isAvailable: true },
 ];
 
 export const mockAuditLog: AuditLogEntry[] = [
-    { id: 'AL001', timestamp: '2023-10-05 10:00 AM', user: 'admin', action: 'User Login', details: 'Successful login' },
-    { id: 'AL002', timestamp: '2023-10-05 10:05 AM', user: 'Dr. Carter', action: 'Update Patient', details: 'Updated vitals for P001' },
+    { id: 'LOG01', timestamp: '2023-10-05 10:05 AM', user: 'Dr. Carter', action: 'View Patient', details: 'Viewed patient P001' },
+    { id: 'LOG02', timestamp: '2023-10-05 10:02 AM', user: 'Admin', action: 'Login', details: 'Successful login' },
+];
+
+export const mockMedications: Medication[] = [
+    { id: 'MED01', name: 'Aspirin', dosage: '81mg', frequency: 'Once a day', stock: 1500 },
+    { id: 'MED02', name: 'Lisinopril', dosage: '10mg', frequency: 'Once a day', stock: 800 },
+    { id: 'MED03', name: 'Metformin', dosage: '500mg', frequency: 'Twice a day', stock: 1200 },
+];
+
+export const mockGenomicVariants: GenomicVariant[] = [
+    { id: 'GV01', gene: 'BRCA1', variant: 'c.5266dupC', implication: 'Increased risk of breast and ovarian cancer', classification: 'Pathogenic'},
+];
+
+export const mockImagingStudies: ImagingStudy[] = [
+    { id: 'IMG01', patientName: 'John Doe', studyType: 'Chest X-Ray', bodyPart: 'Thorax', date: '2023-10-01', imageUrl: 'https://via.placeholder.com/800x600.png?text=Chest+X-Ray' },
+    { id: 'IMG02', patientName: 'Jane Smith', studyType: 'Brain MRI', bodyPart: 'Head', date: '2023-09-29', imageUrl: 'https://via.placeholder.com/800x600.png?text=Brain+MRI' },
 ];

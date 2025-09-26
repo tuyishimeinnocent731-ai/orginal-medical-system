@@ -1,31 +1,26 @@
-// FIX: Created this file to define the VirtualConsultations component.
+
 import React from 'react';
-import { mockConsultations } from '../services/mockData.ts';
-import { TelemedicineIcon } from './IconComponents.tsx';
 
-interface VirtualConsultationsProps {
-  onStartConsultation: (patientName: string, doctorName: string) => void;
-}
+const mockConsultations = [
+  { id: 1, patient: 'Alice Johnson', time: '2:00 PM', topic: 'Follow-up on blood pressure' },
+  { id: 2, patient: 'Bob Williams', time: '3:30 PM', topic: 'Medication review' },
+];
 
-const VirtualConsultations: React.FC<VirtualConsultationsProps> = ({ onStartConsultation }) => {
+const VirtualConsultations: React.FC = () => {
   return (
     <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md">
-      <h2 className="text-xl font-semibold mb-4">Upcoming Virtual Consultations</h2>
+      <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-4">Upcoming Virtual Consultations</h3>
       <div className="space-y-4">
-        {mockConsultations.map(consult => (
-          <div key={consult.id} className="bg-gray-50 dark:bg-gray-900/50 p-4 rounded-lg flex justify-between items-center">
+        {mockConsultations.map((consult) => (
+          <div key={consult.id} className="p-4 rounded-lg bg-gray-50 dark:bg-gray-700/50 flex justify-between items-center">
             <div>
-              <p className="font-bold">{consult.patientName}</p>
-              <p className="text-sm text-gray-500 dark:text-gray-400">with {consult.doctorName}</p>
-              <p className="text-sm text-gray-500 dark:text-gray-400">{consult.date} at {consult.time} via {consult.platform}</p>
+              <p className="font-semibold text-gray-900 dark:text-white">{consult.patient}</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">{consult.topic}</p>
             </div>
-            <button
-              onClick={() => onStartConsultation(consult.patientName, consult.doctorName)}
-              className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 flex items-center gap-2"
-            >
-              <TelemedicineIcon className="w-5 h-5" />
-              Start Call
-            </button>
+            <div className="text-right">
+              <p className="font-semibold">{consult.time}</p>
+              <button className="text-sm text-blue-600 hover:underline">Join Call</button>
+            </div>
           </div>
         ))}
       </div>

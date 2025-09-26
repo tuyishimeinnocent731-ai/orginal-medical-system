@@ -4,26 +4,16 @@ export interface Patient {
   name: string;
   age: number;
   gender: 'Male' | 'Female' | 'Other';
-  admissionDate: string;
-  department: 'Cardiology' | 'Neurology' | 'Oncology' | 'Orthopedics' | 'Pediatrics';
-  bedNumber: string;
-  status: 'Critical' | 'Stable' | 'Discharged';
   bloodType: string;
+  admissionDate: string;
+  department: string;
+  bedNumber: string;
+  status: 'Stable' | 'Critical' | 'Discharged';
+  timeline?: TimelineEvent[];
   vitals?: {
     heartRate: number[];
     spO2: number[];
   };
-  timeline?: TimelineEvent[];
-}
-
-export interface Staff {
-  id: string;
-  name: string;
-  role: 'Doctor' | 'Nurse' | 'Surgeon' | 'Admin' | 'Therapist';
-  department: 'Cardiology' | 'Neurology' | 'Oncology' | 'Orthopedics' | 'Pediatrics' | 'Administration';
-  onCall: boolean;
-  phone: string;
-  email: string;
 }
 
 export interface Appointment {
@@ -32,25 +22,26 @@ export interface Appointment {
   doctorName: string;
   date: string;
   time: string;
-  type: 'Consultation' | 'Follow-up' | 'Procedure';
+  type: 'Consultation' | 'Follow-up' | 'Check-up';
   status: 'Scheduled' | 'Completed' | 'Canceled';
 }
 
-export interface Invoice {
-  id: string;
-  patientName: string;
-  patientId: string;
-  date: string;
-  amount: number;
-  status: 'Paid' | 'Pending' | 'Overdue';
+export interface Staff {
+    id: string;
+    name: string;
+    role: 'Doctor' | 'Nurse' | 'Surgeon' | 'Admin';
+    department: string;
+    onCall: boolean;
+    phone: string;
+    email: string;
 }
 
 export interface Notification {
-  id: string;
-  type: 'message' | 'alert' | 'billing' | 'surgery';
-  message: string;
-  timestamp: string;
-  read: boolean;
+    id: string;
+    type: 'message' | 'alert' | 'surgery' | 'billing';
+    message: string;
+    timestamp: string;
+    read: boolean;
 }
 
 export interface Surgery {
@@ -63,19 +54,7 @@ export interface Surgery {
     startTime: string;
     endTime: string;
     operatingRoom: 'OR 1' | 'OR 2' | 'OR 3' | 'OR 4';
-    status: 'Scheduled' | 'In Progress' | 'Completed' | 'Canceled';
-}
-
-export interface Prescription {
-    id: string;
-    patientName: string;
-    patientId: string;
-    medicationName: string;
-    dosage: string;
-    frequency: string;
-    duration: string;
-    issueDate: string;
-    status: 'Active' | 'Completed' | 'Canceled';
+    status: 'Scheduled' | 'In Progress' | 'Completed';
 }
 
 export interface LabResult {
@@ -86,7 +65,31 @@ export interface LabResult {
     result: string;
     referenceRange: string;
     date: string;
-    status: 'Completed' | 'Pending';
+    status: 'Pending' | 'Completed';
+}
+
+export interface Invoice {
+    id: string;
+    patientId: string;
+    patientName: string;
+    date: string;
+    amount: number;
+    status: 'Paid' | 'Pending' | 'Overdue';
+}
+
+export interface Bed {
+    id: string;
+    ward: string;
+    isOccupied: boolean;
+    patientName?: string;
+}
+
+export interface TimelineEvent {
+    id: string;
+    date: string;
+    type: 'Admission' | 'Observation' | 'Procedure' | 'Discharge';
+    title: string;
+    description: string;
 }
 
 export interface ImagingStudy {
@@ -96,68 +99,6 @@ export interface ImagingStudy {
   bodyPart: string;
   date: string;
   imageUrl: string;
-}
-
-export interface TimelineEvent {
-  id: string;
-  date: string;
-  title: string;
-  description: string;
-  type: 'Admission' | 'Medication' | 'Observation' | 'Procedure' | 'Discharge';
-}
-
-export interface Bed {
-  id: string;
-  ward: string;
-  isOccupied: boolean;
-  patientId?: string;
-  patientName?: string;
-}
-
-export interface Ambulance {
-    id: string;
-    status: 'Available' | 'En-route' | 'At Scene' | 'Returning';
-    location: string;
-    destination?: string;
-}
-
-export interface VirtualConsultation {
-    id: string;
-    patientName: string;
-    doctorName: string;
-    date: string;
-    time: string;
-    platform: 'Internal App' | 'Zoom' | 'Teams';
-}
-
-export interface GenomicData {
-    id: string;
-    patientName: string;
-    sequenceId: string;
-    summary: string;
-    markers: { marker: string; value: string }[];
-}
-
-export interface ClinicalTrial {
-    id: string;
-    title: string;
-    sponsor: string;
-    status: 'Recruiting' | 'Active' | 'Completed';
-    eligibility: string;
-}
-
-export interface FinancialRecord {
-    id: string;
-    date: string;
-    description: string;
-    amount: number;
-    type: 'Revenue' | 'Expense';
-}
-
-export interface PublicHealthData {
-    region: string;
-    disease: string;
-    cases: number;
 }
 
 export interface Resource {
@@ -173,4 +114,20 @@ export interface AuditLogEntry {
     user: string;
     action: string;
     details: string;
+}
+
+export interface Medication {
+    id: string;
+    name: string;
+    dosage: string;
+    frequency: string;
+    stock: number;
+}
+
+export interface GenomicVariant {
+    id: string;
+    gene: string;
+    variant: string;
+    implication: string;
+    classification: 'Benign' | 'Likely Benign' | 'Uncertain' | 'Likely Pathogenic' | 'Pathogenic';
 }

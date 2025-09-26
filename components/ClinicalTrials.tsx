@@ -1,26 +1,36 @@
-// FIX: Created this file to define the ClinicalTrials component.
+
 import React from 'react';
-import { mockClinicalTrials } from '../services/mockData.ts';
+
+const mockTrials = [
+  { id: 'CT001', title: 'A Study of a New Drug for Cardiology Patients', phase: 3, status: 'Recruiting' },
+  { id: 'CT002', title: 'Neurological Disorder Treatment Efficacy', phase: 2, status: 'Active' },
+];
 
 const ClinicalTrials: React.FC = () => {
   return (
-    <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md">
-      <h2 className="text-xl font-semibold mb-4">Available Clinical Trials</h2>
-      <div className="space-y-4">
-        {mockClinicalTrials.map(trial => (
-          <div key={trial.id} className="bg-gray-50 dark:bg-gray-900/50 p-4 rounded-lg border dark:border-gray-700">
-            <div className="flex justify-between items-start">
-              <h3 className="font-bold text-lg">{trial.title}</h3>
-              <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                trial.status === 'Recruiting' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'
-              }`}>
-                {trial.status}
-              </span>
-            </div>
-            <p className="text-sm text-gray-500 dark:text-gray-400">Sponsor: {trial.sponsor}</p>
-            <p className="mt-2 text-sm"><strong>Eligibility:</strong> {trial.eligibility}</p>
-          </div>
-        ))}
+    <div className="space-y-6">
+      <h1 className="text-3xl font-bold">Clinical Trials</h1>
+      <div className="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-md overflow-x-auto">
+        <table className="w-full text-left">
+          <thead className="border-b dark:border-gray-700">
+            <tr>
+              <th className="p-3">Trial ID</th>
+              <th className="p-3">Title</th>
+              <th className="p-3">Phase</th>
+              <th className="p-3">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {mockTrials.map(trial => (
+              <tr key={trial.id} className="border-b dark:border-gray-700">
+                <td className="p-3 font-mono">{trial.id}</td>
+                <td className="p-3 font-medium">{trial.title}</td>
+                <td className="p-3">{trial.phase}</td>
+                <td className="p-3">{trial.status}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );
