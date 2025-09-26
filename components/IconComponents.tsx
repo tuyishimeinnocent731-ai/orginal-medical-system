@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 export const DashboardIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
@@ -99,25 +98,3 @@ export const ChatBubbleIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) =
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
   </svg>
 );
-
-// A placeholder for a header component, not just an icon.
-export const Header: React.FC<{ toggleDarkMode: () => void; isDarkMode: boolean }> = ({ toggleDarkMode, isDarkMode }) => (
-  <header className="flex-shrink-0 bg-white dark:bg-gray-800 border-b dark:border-gray-700 shadow-sm p-4 flex justify-between items-center">
-    <GlobalSearch />
-    <div className="flex items-center space-x-4">
-      <Notifications />
-      <DarkModeToggle toggleDarkMode={toggleDarkMode} isDarkMode={isDarkMode} />
-      <div className="flex items-center space-x-2">
-        <img className="h-9 w-9 rounded-full" src="https://via.placeholder.com/150" alt="User avatar" />
-        <div>
-            <p className="font-semibold text-sm">Dr. Alex Doe</p>
-            <p className="text-xs text-gray-500 dark:text-gray-400">Cardiologist</p>
-        </div>
-      </div>
-    </div>
-  </header>
-);
-
-import GlobalSearch from './GlobalSearch.tsx';
-import Notifications from './Notifications.tsx';
-import DarkModeToggle from './DarkModeToggle.tsx';

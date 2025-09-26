@@ -1,4 +1,5 @@
 {
-  "name": "MediDash - Advanced Hospital Management",
-  "description": "A comprehensive, feature-rich hospital management system with advanced modules for patient care, administration, and analytics."
+  "name": "MediDash - Hospital Management System",
+  "description": "A comprehensive and interactive hospital management system with features for patient management, billing, scheduling, and more.",
+  "requestFramePermissions": []
 }
