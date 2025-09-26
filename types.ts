@@ -1,27 +1,25 @@
-// FIX: Created this file to define all shared types for the application.
+// FIX: Created this file to define all application types.
 
 export type View =
   | 'dashboard'
   | 'patients'
   | 'patient-detail'
+  | 'staff'
   | 'staff-detail'
-  | 'department-detail'
   | 'appointments'
   | 'symptom-checker'
-  | 'billing'
-  | 'staff'
-  | 'map'
   | 'telemedicine'
-  | 'surgical-schedule'
+  | 'billing'
   | 'pharmacy'
-  | 'laboratory';
+  | 'laboratory'
+  | 'surgical-schedule'
+  | 'hospital-map'
+  | 'department-detail'
+  | 'patient-portal'
+  | 'virtual-consultations'
+  | 'consultation-room';
 
-export interface Navigation {
-  view: View;
-  id: string | null;
-}
-
-export type Department = 'Cardiology' | 'Neurology' | 'Orthopedics' | 'ICU' | 'Oncology' | 'General Medicine' | 'Surgery' | 'Administration';
+export type Department = 'Cardiology' | 'Neurology' | 'Orthopedics' | 'ICU' | 'Oncology' | 'General Medicine';
 
 export interface Patient {
   id: string;
@@ -35,12 +33,13 @@ export interface Patient {
   vitals?: {
     heartRate: number[];
     spO2: number[];
+    bloodPressure: string[];
   };
+  timeline?: TimelineEvent[];
   medicalHistory?: string[];
   currentMedications?: Medication[];
   labResults?: LabResult[];
-  timeline?: TimelineEvent[];
-  imaging?: Imaging[];
+  imagingResults?: ImagingResult[];
 }
 
 export interface Staff {
@@ -57,7 +56,7 @@ export interface Appointment {
   id: string;
   patientName: string;
   doctor: string;
-  department: Patient['department'];
+  department: Department;
   date: string;
   time: string;
   status: 'Scheduled' | 'Completed' | 'Cancelled';
@@ -72,18 +71,11 @@ export interface SymptomAnalysisResult {
 export interface Invoice {
   id: string;
   patientName: string;
-  service: string;
+  patientId: string;
   date: string;
   amount: number;
-  status: 'Paid' | 'Unpaid' | 'Overdue';
-}
-
-export interface Notification {
-  id: string;
-  type: 'message' | 'alert' | 'billing' | 'surgery';
-  message: string;
-  timestamp: string;
-  read: boolean;
+  status: 'Paid' | 'Pending' | 'Overdue';
+  items: { description: string; amount: number }[];
 }
 
 export interface ChatContact {
@@ -92,13 +84,41 @@ export interface ChatContact {
     avatarUrl: string;
     lastMessage: string;
     unreadCount: number;
+    online?: boolean;
 }
-  
+
 export interface ChatMessage {
     id: string;
     text: string;
     sender: 'user' | 'doctor';
     timestamp: string;
+}
+
+export interface Notification {
+    id: string;
+    type: 'message' | 'surgery' | 'billing' | 'alert';
+    message: string;
+    timestamp: string;
+    read: boolean;
+}
+
+export interface Medication {
+    id: string;
+    name: string;
+    dosage: string;
+    frequency: string;
+    status: 'Active' | 'Discontinued';
+}
+
+export interface LabResult {
+    id: string;
+    testName: string;
+    patientName: string;
+    patientId: string;
+    value: string;
+    referenceRange: string;
+    date: string;
+    status: 'Normal' | 'Abnormal' | 'Pending';
 }
 
 export interface Surgery {
@@ -110,43 +130,43 @@ export interface Surgery {
     date: string;
     startTime: string;
     endTime: string;
-    status: 'Scheduled' | 'In Progress' | 'Completed' | 'Cancelled';
     operatingRoom: string;
-}
-
-export interface Medication {
-    id: string;
-    name: string;
-    dosage: string;
-    frequency: string;
-    status: 'Active' | 'Discontinued';
-    patientId: string;
-    patientName: string;
-}
-
-export interface LabResult {
-    id: string;
-    testName: string;
-    value: string;
-    referenceRange: string;
-    date: string;
-    status: 'Normal' | 'Abnormal' | 'Pending';
-    patientId: string;
-    patientName: string;
+    status: 'Scheduled' | 'In Progress' | 'Completed' | 'Cancelled';
 }
 
 export interface TimelineEvent {
     id: string;
     date: string;
+    type: 'Admission' | 'Discharge' | 'Procedure' | 'Medication' | 'Observation';
     title: string;
     description: string;
-    type: 'Admission' | 'Discharge' | 'Procedure' | 'Medication' | 'Observation' | 'Test Result';
 }
 
-export interface Imaging {
+export interface ImagingResult {
     id: string;
     type: 'X-Ray' | 'MRI' | 'CT Scan';
     date: string;
     imageUrl: string;
     notes: string;
+}
+
+export interface Prescription {
+    id: string;
+    medicationName: string;
+    dosage: string;
+    frequency: string;
+    duration: string;
+    patientName: string;
+    patientId: string;
+    issueDate: string;
+    status: 'Active' | 'Completed';
+}
+
+export interface VirtualConsultation {
+    id: string;
+    patientName: string;
+    doctorName: string;
+    date: string;
+    time: string;
+    status: 'Scheduled' | 'Completed' | 'Cancelled';
 }
