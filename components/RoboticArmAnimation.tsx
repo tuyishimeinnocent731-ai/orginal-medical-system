@@ -1,6 +1,6 @@
+
 // FIX: Created a simple, stylized CSS animation of a robotic arm, intended for visual flair in views like the surgical schedule.
 import React from 'react';
-import './RoboticArmAnimation.css';
 
 const RoboticArmAnimation: React.FC = () => {
   return (
@@ -109,9 +109,11 @@ const styles = `
 `;
 
 // Inject styles into the document head
-const styleSheet = document.createElement("style");
-styleSheet.innerText = styles;
-document.head.appendChild(styleSheet);
+if (typeof document !== 'undefined') {
+    const styleSheet = document.createElement("style");
+    styleSheet.innerText = styles;
+    document.head.appendChild(styleSheet);
+}
 
 
 export default RoboticArmAnimation;

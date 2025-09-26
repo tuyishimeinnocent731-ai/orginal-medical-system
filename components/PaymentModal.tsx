@@ -1,7 +1,8 @@
+
 // FIX: Created this file to define the PaymentModal component.
 import React from 'react';
-import type { Invoice } from '../types';
-import QrCode from './QrCode';
+import type { Invoice } from '../types.ts';
+import QrCode from './QrCode.tsx';
 
 interface PaymentModalProps {
   invoice: Invoice;

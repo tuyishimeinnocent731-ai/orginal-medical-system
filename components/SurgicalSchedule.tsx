@@ -1,9 +1,10 @@
+
 // FIX: Created this file to define the SurgicalSchedule component.
 import React, { useState, useMemo } from 'react';
-import { mockSurgeries } from '../services/mockData';
-import type { Surgery } from '../types';
-import { SearchIcon } from './IconComponents';
-import BookSurgeryModal from './BookSurgeryModal';
+import { mockSurgeries } from '../services/mockData.ts';
+import type { Surgery } from '../types.ts';
+import { SearchIcon } from './IconComponents.tsx';
+import BookSurgeryModal from './BookSurgeryModal.tsx';
 
 const getStatusBadge = (status: Surgery['status']) => {
   switch (status) {

@@ -1,7 +1,8 @@
+
 // FIX: Created the GenomicDetail component to display specific genomic variants and their clinical implications for a patient.
 import React, { useMemo } from 'react';
-import { mockPatients, mockGenomicVariants } from '../services/mockData';
-import type { GenomicVariant } from '../types';
+import { mockPatients, mockGenomicVariants } from '../services/mockData.ts';
+import type { GenomicVariant } from '../types.ts';
 
 interface GenomicDetailProps {
   patientId: string;

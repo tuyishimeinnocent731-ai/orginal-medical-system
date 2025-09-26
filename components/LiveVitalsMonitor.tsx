@@ -1,9 +1,10 @@
+
 import React, { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, CartesianGrid } from 'recharts';
 // FIX: Created mockData.ts to provide the mock patient data.
-import { mockPatients } from '../services/mockData';
+import { mockPatients } from '../services/mockData.ts';
 // FIX: Created types.ts to define the Patient type.
-import type { Patient } from '../types';
+import type { Patient } from '../types.ts';
 
 const LiveVitalsMonitor: React.FC = () => {
     const criticalPatients = mockPatients.filter(p => p.status === 'Critical' && p.vitals);

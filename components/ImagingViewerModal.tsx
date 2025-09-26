@@ -1,6 +1,7 @@
+
 // FIX: Created a modal component for viewing medical imaging studies, allowing users to see a larger version of an image with its details.
 import React from 'react';
-import type { ImagingStudy } from '../types';
+import type { ImagingStudy } from '../types.ts';
 
 interface ImagingViewerModalProps {
   imagingStudy: ImagingStudy;

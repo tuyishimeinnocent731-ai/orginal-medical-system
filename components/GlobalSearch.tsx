@@ -1,8 +1,9 @@
+
 import React, { useState, useMemo } from 'react';
 // FIX: Created mockData.ts and consolidated imports into a single line.
-import { mockPatients, mockStaff, mockInvoices } from '../services/mockData';
+import { mockPatients, mockStaff, mockInvoices } from '../services/mockData.ts';
 // FIX: Created IconComponents.tsx to provide the SearchIcon component.
-import { SearchIcon } from './IconComponents';
+import { SearchIcon } from './IconComponents.tsx';
 
 const GlobalSearch: React.FC = () => {
   const [query, setQuery] = useState('');

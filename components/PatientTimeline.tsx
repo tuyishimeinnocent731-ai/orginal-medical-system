@@ -1,6 +1,7 @@
+
 // FIX: Created this file to define the PatientTimeline component.
 import React from 'react';
-import type { TimelineEvent } from '../types';
+import type { TimelineEvent } from '../types.ts';
 
 interface PatientTimelineProps {
   timeline?: TimelineEvent[];

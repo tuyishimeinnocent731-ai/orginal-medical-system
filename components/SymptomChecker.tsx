@@ -1,8 +1,9 @@
+
 import React, { useState } from 'react';
 // FIX: Created geminiService.ts to provide the analyzeSymptoms function.
-import { analyzeSymptoms } from '../services/geminiService';
+import { analyzeSymptoms } from '../services/geminiService.ts';
 // FIX: Created types.ts to define the SymptomAnalysisResult type.
-import type { SymptomAnalysisResult } from '../types';
+import type { SymptomAnalysisResult } from '../types.ts';
 
 const LoadingSpinner: React.FC = () => (
     <div className="flex justify-center items-center space-x-2">

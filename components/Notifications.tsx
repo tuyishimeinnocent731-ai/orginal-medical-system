@@ -1,10 +1,11 @@
+
 import React, { useState } from 'react';
 // FIX: Created mockData.ts to provide mock notification data.
-import { mockNotifications } from '../services/mockData';
+import { mockNotifications } from '../services/mockData.ts';
 // FIX: Created IconComponents.tsx to provide icon components.
-import { NotificationIcon, ChatBubbleIcon, SurgeryIcon, BillingIcon } from './IconComponents';
+import { NotificationIcon, ChatBubbleIcon, SurgeryIcon, BillingIcon } from './IconComponents.tsx';
 // FIX: Created types.ts to define the Notification type.
-import type { Notification } from '../types';
+import type { Notification } from '../types.ts';
 
 const getTypeIcon = (type: Notification['type']) => {
     switch (type) {

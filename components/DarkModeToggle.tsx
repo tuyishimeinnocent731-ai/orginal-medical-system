@@ -1,6 +1,7 @@
+
 import React from 'react';
 // FIX: Created IconComponents.tsx to provide the SunIcon and MoonIcon components.
-import { SunIcon, MoonIcon } from './IconComponents';
+import { SunIcon, MoonIcon } from './IconComponents.tsx';
 
 interface DarkModeToggleProps {
   isDarkMode: boolean;

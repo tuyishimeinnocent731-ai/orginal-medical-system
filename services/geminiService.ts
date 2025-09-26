@@ -1,70 +1,71 @@
-// FIX: Implemented the Gemini API service for symptom analysis, including client initialization, a JSON schema for structured responses, and robust error handling, adhering to the coding guidelines.
+
 import { GoogleGenAI, Type } from "@google/genai";
-import type { SymptomAnalysisResult } from '../types';
+import type { SymptomAnalysisResult } from '../types.ts';
 
-// FIX: Initialized the Gemini AI client.
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY! });
+// FIX: Initialize the GoogleGenAI client according to guidelines.
+const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
-// FIX: Implemented the analyzeSymptoms function to call the Gemini API.
 export const analyzeSymptoms = async (symptoms: string): Promise<SymptomAnalysisResult> => {
-  const prompt = `Analyze the following patient symptoms and provide a preliminary analysis. The symptoms are: "${symptoms}".`;
-
-  try {
-    const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
-      contents: prompt,
-      config: {
-        responseMimeType: "application/json",
-        responseSchema: {
-          type: Type.OBJECT,
-          properties: {
-            possibleConditions: {
-              type: Type.ARRAY,
-              description: "A list of 2-3 possible medical conditions based on the symptoms, with a brief explanation for each.",
-              items: {
-                type: Type.OBJECT,
-                properties: {
-                  name: {
-                    type: Type.STRING,
-                    description: "The name of the possible condition."
-                  },
-                  explanation: {
-                    type: Type.STRING,
-                    description: "A brief explanation of why this condition might match the symptoms."
-                  }
-                },
-                required: ["name", "explanation"]
-              }
-            },
-            suggestedNextSteps: {
-              type: Type.ARRAY,
-              description: "A list of 2-3 recommended next steps, such as specific tests or seeing a specialist.",
-              items: {
-                type: Type.STRING
-              }
-            },
-            disclaimer: {
-              type: Type.STRING,
-              description: "A standard disclaimer that this is an AI analysis and not a substitute for professional medical advice. It should state: 'This is an AI-generated analysis and should not be considered a medical diagnosis. Consult with a qualified healthcare professional for any health concerns.'"
-            }
-          },
-          required: ["possibleConditions", "suggestedNextSteps", "disclaimer"]
-        },
-      },
-    });
-
-    const jsonText = response.text.trim();
-    // Gemini can sometimes wrap the JSON in markdown backticks
-    const cleanedJsonText = jsonText.replace(/^```json\s*|```$/g, '');
-    const result = JSON.parse(cleanedJsonText);
+    const systemInstruction = `You are a helpful medical AI assistant. 
+    Analyze the provided symptoms and return a preliminary analysis. 
+    Your response must be in JSON format. Do not include any introductory text or markdown formatting. 
+    The JSON object should strictly follow this schema:
+    - possibleConditions: an array of objects, each with 'name' (string) and 'explanation' (string, a brief reason why this condition might fit).
+    - suggestedNextSteps: an array of strings with recommended actions (e.g., "Consult a primary care physician," "Consider a blood test").
+    - disclaimer: a mandatory string stating that this is not a medical diagnosis and a professional should be consulted.
+    `;
     
-    return result as SymptomAnalysisResult;
+    try {
+        // FIX: Use the recommended ai.models.generateContent method with responseSchema.
+        const response = await ai.models.generateContent({
+            model: "gemini-2.5-flash",
+            contents: `Analyze these symptoms: ${symptoms}`,
+            config: {
+                systemInstruction: systemInstruction,
+                responseMimeType: "application/json",
+                responseSchema: {
+                    type: Type.OBJECT,
+                    properties: {
+                        possibleConditions: {
+                            type: Type.ARRAY,
+                            items: {
+                                type: Type.OBJECT,
+                                properties: {
+                                    name: { type: Type.STRING },
+                                    explanation: { type: Type.STRING }
+                                },
+                                required: ['name', 'explanation']
+                            }
+                        },
+                        suggestedNextSteps: {
+                            type: Type.ARRAY,
+                            items: {
+                                type: Type.STRING
+                            }
+                        },
+                        disclaimer: {
+                            type: Type.STRING
+                        }
+                    },
+                    required: ['possibleConditions', 'suggestedNextSteps', 'disclaimer']
+                }
+            },
+        });
+        
+        // FIX: Access the generated text directly from the response.
+        const text = response.text;
+        if (!text) {
+             throw new Error('Received an empty response from the AI.');
+        }
 
-  } catch (error) {
-    console.error("Error analyzing symptoms with Gemini API:", error);
-    if (error instanceof Error) {
-        throw new Error(`Failed to analyze symptoms. Gemini API error: ${error.message}`);
+        // The response text should be a valid JSON string based on the schema
+        return JSON.parse(text) as SymptomAnalysisResult;
+
+    } catch (error) {
+        console.error("Error analyzing symptoms:", error);
+        if (error instanceof Error) {
+            throw new Error(`Failed to get analysis from AI: ${error.message}`);
+        }
+        throw new Error('An unknown error occurred while communicating with the AI service.');
     }
-    throw new Error('An unexpected error occurred while analyzing symptoms.');
-  }
 };

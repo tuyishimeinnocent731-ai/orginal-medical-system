@@ -1,11 +1,13 @@
+
 // FIX: Created this file to define the Dashboard component.
 import React from 'react';
-import StatCard from './StatCard';
-import PatientAdmissionsChart from './PatientAdmissionsChart';
-import DepartmentOccupancyChart from './DepartmentOccupancyChart';
-import LiveVitalsMonitor from './LiveVitalsMonitor';
-import { mockPatients, mockStaff } from '../services/mockData';
-import { PatientsIcon, StaffIcon } from './IconComponents';
+// FIX: Added file extensions to imports.
+import StatCard from './StatCard.tsx';
+import PatientAdmissionsChart from './PatientAdmissionsChart.tsx';
+import DepartmentOccupancyChart from './DepartmentOccupancyChart.tsx';
+import LiveVitalsMonitor from './LiveVitalsMonitor.tsx';
+import { mockPatients, mockStaff } from '../services/mockData.ts';
+import { PatientsIcon, StaffIcon } from './IconComponents.tsx';
 
 const Dashboard: React.FC = () => {
   const activePatients = mockPatients.filter(p => p.status !== 'Discharged').length;

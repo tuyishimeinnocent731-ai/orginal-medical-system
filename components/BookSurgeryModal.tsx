@@ -1,6 +1,7 @@
+
 // FIX: Created this file to define the BookSurgeryModal component.
 import React, { useState } from 'react';
-import type { Surgery } from '../types';
+import type { Surgery } from '../types.ts';
 
 interface BookSurgeryModalProps {
   onClose: () => void;
@@ -16,7 +17,7 @@ const BookSurgeryModal: React.FC<BookSurgeryModalProps> = ({ onClose, onSave }) 
     date: '',
     startTime: '',
     endTime: '',
-    operatingRoom: 'OR 1',
+    operatingRoom: 'OR 1' as Surgery['operatingRoom'],
     status: 'Scheduled' as Surgery['status'],
   });
 

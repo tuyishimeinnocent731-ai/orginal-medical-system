@@ -1,8 +1,9 @@
+
 import React, { useMemo } from 'react';
 // FIX: Created mockData.ts to provide mock staff and patient data.
-import { mockStaff, mockPatients } from '../services/mockData';
+import { mockStaff, mockPatients } from '../services/mockData.ts';
 // FIX: Created types.ts to define the Patient type.
-import type { Patient } from '../types';
+import type { Patient } from '../types.ts';
 
 interface StaffDetailProps {
   staffId: string;

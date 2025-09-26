@@ -1,10 +1,11 @@
+
 import React, { useState, useMemo } from 'react';
 // FIX: Created mockData.ts to provide mock staff data.
-import { mockStaff } from '../services/mockData';
+import { mockStaff } from '../services/mockData.ts';
 // FIX: Created IconComponents.tsx to provide the SearchIcon component.
-import { SearchIcon } from './IconComponents';
+import { SearchIcon } from './IconComponents.tsx';
 // FIX: Created types.ts to define the View type.
-import type { View } from '../types';
+import type { View } from '../types.ts';
 
 interface StaffProps {
     navigate: (view: View, id: string) => void;

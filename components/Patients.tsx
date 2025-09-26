@@ -1,10 +1,11 @@
+
 import React, { useState, useMemo } from 'react';
 // FIX: Created mockData.ts to provide the mock patient data.
-import { mockPatients } from '../services/mockData';
+import { mockPatients } from '../services/mockData.ts';
 // FIX: Created types.ts to define the Patient and View types.
-import type { Patient, View } from '../types';
+import type { Patient, View } from '../types.ts';
 // FIX: Created IconComponents.tsx to provide the SearchIcon component.
-import { SearchIcon } from './IconComponents';
+import { SearchIcon } from './IconComponents.tsx';
 
 const getStatusBadge = (status: 'Stable' | 'Critical' | 'Discharged') => {
   switch (status) {

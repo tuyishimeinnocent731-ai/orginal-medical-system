@@ -1,6 +1,7 @@
+
 // FIX: Created this file to define the IssuePrescriptionModal component.
 import React, { useState } from 'react';
-import type { Prescription } from '../types';
+import type { Prescription } from '../types.ts';
 
 interface IssuePrescriptionModalProps {
   onClose: () => void;

@@ -1,10 +1,11 @@
+
 // FIX: Created the PatientDetail component to display a comprehensive view of a single patient's data, including vitals, timeline, and AI predictions.
 import React, { useMemo, useState } from 'react';
-import { mockPatients } from '../services/mockData';
-import type { View, ImagingStudy } from '../types';
-import AIPredictions from './AIPredictions';
-import PatientTimeline from './PatientTimeline';
-import ImagingViewerModal from './ImagingViewerModal';
+import { mockPatients } from '../services/mockData.ts';
+import type { View, ImagingStudy } from '../types.ts';
+import AIPredictions from './AIPredictions.tsx';
+import PatientTimeline from './PatientTimeline.tsx';
+import ImagingViewerModal from './ImagingViewerModal.tsx';
 
 interface PatientDetailProps {
   patientId: string;

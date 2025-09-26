@@ -1,6 +1,7 @@
+
 // FIX: Created this file to define the ConsultationRoom component.
 import React from 'react';
-import { SendIcon } from './IconComponents';
+import { SendIcon } from './IconComponents.tsx';
 
 const ConsultationRoom: React.FC = () => {
     // This is a placeholder component for a video call UI

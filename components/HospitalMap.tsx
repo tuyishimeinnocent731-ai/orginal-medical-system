@@ -1,6 +1,7 @@
+
 import React, { useState } from 'react';
 // FIX: Created types.ts to define the Patient and View types.
-import type { Patient, View, Department } from '../types';
+import type { View, Department } from '../types.ts';
 
 const departments: Record<string, { x: number; y: number; width: number; height: number; beds: number }> = {
     'Cardiology': { x: 20, y: 20, width: 200, height: 100, beds: 20 },

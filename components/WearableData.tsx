@@ -1,6 +1,7 @@
+
 // FIX: Created the WearableData component to visualize patient data from wearable devices using charts for metrics like sleep and activity.
 import React, { useMemo } from 'react';
-import { mockPatients } from '../services/mockData';
+import { mockPatients } from '../services/mockData.ts';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, AreaChart, Area } from 'recharts';
 
 interface WearableDataProps {

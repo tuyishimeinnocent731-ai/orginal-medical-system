@@ -1,9 +1,10 @@
+
 // FIX: Created this file to define the Billing component.
 import React, { useState, useMemo } from 'react';
-import { mockInvoices } from '../services/mockData';
-import type { Invoice } from '../types';
-import { SearchIcon } from './IconComponents';
-import PaymentModal from './PaymentModal';
+import { mockInvoices } from '../services/mockData.ts';
+import type { Invoice } from '../types.ts';
+import { SearchIcon } from './IconComponents.tsx';
+import PaymentModal from './PaymentModal.tsx';
 
 const getStatusBadge = (status: Invoice['status']) => {
   switch (status) {

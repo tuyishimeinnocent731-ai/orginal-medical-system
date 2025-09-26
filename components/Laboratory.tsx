@@ -1,8 +1,9 @@
+
 // FIX: Created the Laboratory component to display and manage lab results, featuring a searchable and filterable table view.
 import React, { useState, useMemo } from 'react';
-import { mockLabResults } from '../services/mockData';
-import type { LabResult } from '../types';
-import { SearchIcon } from './IconComponents';
+import { mockLabResults } from '../services/mockData.ts';
+import type { LabResult } from '../types.ts';
+import { SearchIcon } from './IconComponents.tsx';
 
 const getStatusBadge = (status: LabResult['status']) => {
   switch (status) {

@@ -1,3 +1,4 @@
+
 // FIX: Created this file to define the QrCode component.
 import React from 'react';
 

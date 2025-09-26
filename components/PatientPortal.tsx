@@ -1,8 +1,9 @@
+
 // FIX: Created this file to define the PatientPortal component.
 import React from 'react';
-import { mockAppointments, mockPrescriptions } from '../services/mockData';
-import { AppointmentsIcon, PharmacyIcon } from './IconComponents';
-import type { View } from '../types';
+import { mockAppointments, mockPrescriptions } from '../services/mockData.ts';
+import { AppointmentsIcon, PharmacyIcon } from './IconComponents.tsx';
+import type { View } from '../types.ts';
 
 interface PatientPortalProps {
     navigate: (view: View, id?: string) => void;

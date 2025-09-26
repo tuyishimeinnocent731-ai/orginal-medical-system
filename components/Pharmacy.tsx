@@ -1,9 +1,10 @@
+
 // FIX: Created the Pharmacy component to manage prescriptions, including a table view, search functionality, and a modal for issuing new prescriptions.
 import React, { useState, useMemo } from 'react';
-import { mockPrescriptions } from '../services/mockData';
-import type { Prescription } from '../types';
-import { SearchIcon } from './IconComponents';
-import IssuePrescriptionModal from './IssuePrescriptionModal';
+import { mockPrescriptions } from '../services/mockData.ts';
+import type { Prescription } from '../types.ts';
+import { SearchIcon } from './IconComponents.tsx';
+import IssuePrescriptionModal from './IssuePrescriptionModal.tsx';
 
 const getStatusBadge = (status: Prescription['status']) => {
   switch (status) {

@@ -1,8 +1,9 @@
+
 import React from 'react';
 // FIX: Created mockData.ts to provide mock appointment data.
-import { mockAppointments } from '../services/mockData';
+import { mockAppointments } from '../services/mockData.ts';
 // FIX: Created types.ts to define the Appointment type.
-import type { Appointment } from '../types';
+import type { Appointment } from '../types.ts';
 
 const getStatusColors = (status: Appointment['status']) => {
   switch (status) {

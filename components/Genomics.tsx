@@ -1,7 +1,8 @@
+
 // FIX: Created the Genomics component to list patients with available genomic data, providing an entry point to detailed genomic analysis.
 import React from 'react';
-import { mockPatients } from '../services/mockData';
-import type { View } from '../types';
+import { mockPatients } from '../services/mockData.ts';
+import type { View } from '../types.ts';
 
 interface GenomicsProps {
     navigate: (view: View, id: string) => void;

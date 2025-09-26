@@ -1,8 +1,9 @@
+
 // FIX: Created this file to define the VirtualConsultations component.
 import React from 'react';
-import { mockVirtualConsultations } from '../services/mockData';
-import type { VirtualConsultation } from '../types';
-import { TelemedicineIcon } from './IconComponents';
+import { mockVirtualConsultations } from '../services/mockData.ts';
+import type { VirtualConsultation } from '../types.ts';
+import { TelemedicineIcon } from './IconComponents.tsx';
 
 const getStatusBadge = (status: VirtualConsultation['status']) => {
   switch (status) {

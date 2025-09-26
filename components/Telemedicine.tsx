@@ -1,14 +1,15 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 // FIX: Created mockData.ts to provide mock chat data.
-import { mockChatContacts, mockMessages } from '../services/mockData';
+import { mockChatContacts, mockMessages } from '../services/mockData.ts';
 // FIX: Created types.ts to define chat-related types.
-import type { ChatContact, ChatMessage } from '../types';
+import type { ChatContact, ChatMessage } from '../types.ts';
 // FIX: Created IconComponents.tsx to provide the SendIcon.
-import { SendIcon } from './IconComponents';
+import { SendIcon } from './IconComponents.tsx';
 
 const Telemedicine: React.FC = () => {
     const [contacts] = useState<ChatContact[]>(mockChatContacts);
-    const [selectedContact, setSelectedContact] = useState<ChatContact>(contacts[1]);
+    const [selectedContact, setSelectedContact] = useState<ChatContact>(contacts[0]);
     const [messages, setMessages] = useState<ChatMessage[]>(mockMessages[selectedContact.id]);
     const [newMessage, setNewMessage] = useState('');
     const messagesEndRef = useRef<HTMLDivElement>(null);

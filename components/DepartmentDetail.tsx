@@ -1,9 +1,10 @@
+
 import React, { useMemo } from 'react';
 // FIX: Created mockData.ts to provide mock staff and patient data.
-import { mockStaff, mockPatients } from '../services/mockData';
+import { mockStaff, mockPatients } from '../services/mockData.ts';
 // FIX: Created IconComponents.tsx to provide icon components.
-import { StaffIcon, PatientsIcon } from './IconComponents';
-import StatCard from './StatCard';
+import { StaffIcon, PatientsIcon } from './IconComponents.tsx';
+import StatCard from './StatCard.tsx';
 
 interface DepartmentDetailProps {
   departmentName: string;

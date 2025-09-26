@@ -1,7 +1,8 @@
+
 import React from 'react';
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 // FIX: Created mockData.ts to provide the mock patient data.
-import { mockPatients } from '../services/mockData';
+import { mockPatients } from '../services/mockData.ts';
 
 const DepartmentOccupancyChart: React.FC = () => {
     const isDarkMode = typeof window !== 'undefined' && document.documentElement.classList.contains('dark');
@@ -35,8 +36,8 @@ const DepartmentOccupancyChart: React.FC = () => {
                         fill="#8884d8"
                         dataKey="value"
                         nameKey="name"
-                        // FIX: Added nullish coalescing operator to prevent type error on `percent`.
-                        label={({ name, percent }) => `${name} ${((percent ?? 0) * 100).toFixed(0)}%`}
+                        // FIX: The `percent` property can be undefined. Coalesce to 0 before calculation.
+                        label={({ name, percent }) => `${name} ${((percent || 0) * 100).toFixed(0)}%`}
                     >
                         {data.map((entry, index) => (
                             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />

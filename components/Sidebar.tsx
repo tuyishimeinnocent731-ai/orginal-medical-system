@@ -1,22 +1,10 @@
-// FIX: Created the Sidebar component to provide primary navigation for the application, with dynamic highlighting for the active view.
+
 import React from 'react';
-import type { View } from '../types';
+import type { View } from '../types.ts';
 import { 
-    DashboardIcon, 
-    PatientsIcon, 
-    AppointmentsIcon, 
-    BillingIcon,
-    StaffIcon,
-    SymptomCheckerIcon,
-    TelemedicineIcon,
-    SurgeryIcon,
-    PharmacyIcon,
-    LaboratoryIcon,
-    MapIcon,
-    PatientPortalIcon,
-    GenomicsIcon,
-    WearablesIcon
-} from './IconComponents';
+    DashboardIcon, PatientsIcon, AppointmentsIcon, HeartIcon, BillingIcon, StaffIcon, MapIcon, 
+    TelemedicineIcon, SurgeryIcon, PharmacyIcon, LabIcon, UserCircleIcon, DnaIcon, ClipboardIcon, DollarIcon
+} from './IconComponents.tsx';
 
 interface SidebarProps {
   currentView: View;
@@ -24,80 +12,101 @@ interface SidebarProps {
 }
 
 const NavLink: React.FC<{
-  view: View;
-  currentView: View;
-  navigate: (view: View) => void;
   icon: React.ReactNode;
   label: string;
-}> = ({ view, currentView, navigate, icon, label }) => {
-  const isActive = currentView === view;
+  isActive: boolean;
+  onClick: () => void;
+}> = ({ icon, label, isActive, onClick }) => {
   return (
     <button
-      onClick={() => navigate(view)}
-      className={`flex items-center w-full px-4 py-3 text-sm font-medium rounded-lg transition-colors ${
+      onClick={onClick}
+      className={`w-full flex items-center px-4 py-2.5 text-sm font-medium rounded-lg transition-colors duration-200 ${
         isActive
           ? 'bg-blue-600 text-white shadow-lg'
           : 'text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'
       }`}
     >
-      <span className="mr-3">{icon}</span>
-      {label}
+      <div className="w-6 h-6 mr-3">{icon}</div>
+      <span>{label}</span>
     </button>
   );
 };
 
-const Sidebar: React.FC<SidebarProps> = ({ currentView, navigate }) => {
-    const adminLinks = [
-        { view: 'dashboard', icon: <DashboardIcon className="w-5 h-5" />, label: 'Dashboard' },
-        { view: 'patients', icon: <PatientsIcon className="w-5 h-5" />, label: 'Patients' },
-        { view: 'staff', icon: <StaffIcon className="w-5 h-5" />, label: 'Staff' },
-        { view: 'appointments', icon: <AppointmentsIcon className="w-5 h-5" />, label: 'Appointments' },
-        { view: 'surgical-schedule', icon: <SurgeryIcon className="w-5 h-5" />, label: 'Surgery' },
-        { view: 'billing', icon: <BillingIcon className="w-5 h-5" />, label: 'Billing' },
-        { view: 'pharmacy', icon: <PharmacyIcon className="w-5 h-5" />, label: 'Pharmacy' },
-        { view: 'laboratory', icon: <LaboratoryIcon className="w-5 h-5" />, label: 'Laboratory' },
-        { view: 'hospital-map', icon: <MapIcon className="w-5 h-5" />, label: 'Hospital Map' },
-    ];
-    
-    const toolLinks = [
-        { view: 'symptom-checker', icon: <SymptomCheckerIcon className="w-5 h-5" />, label: 'AI Symptom Checker' },
-        { view: 'telemedicine', icon: <TelemedicineIcon className="w-5 h-5" />, label: 'Telemedicine' },
-    ];
+const NavSection: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
+    <div>
+        <h3 className="px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">{title}</h3>
+        <div className="space-y-1">
+            {children}
+        </div>
+    </div>
+);
 
-    const patientLinks = [
-        { view: 'patient-portal', icon: <PatientPortalIcon className="w-5 h-5" />, label: 'Patient Portal' },
-    ];
+const Sidebar: React.FC<SidebarProps> = ({ currentView, navigate }) => {
+  // FIX: Explicitly typed navItems to ensure 'view' is of type View, not string.
+  const navItems: Record<string, { view: View; label: string; icon: React.ReactNode }[]> = {
+    clinical: [
+      { view: 'dashboard', label: 'Dashboard', icon: <DashboardIcon /> },
+      { view: 'patients', label: 'Patients', icon: <PatientsIcon /> },
+      { view: 'appointments', label: 'Appointments', icon: <AppointmentsIcon /> },
+      { view: 'surgeries', label: 'Surgeries', icon: <SurgeryIcon /> },
+      { view: 'telemedicine', label: 'Telemedicine', icon: <TelemedicineIcon /> },
+    ],
+    administrative: [
+      { view: 'billing', label: 'Billing', icon: <BillingIcon /> },
+      { view: 'staff', label: 'Staff', icon: <StaffIcon /> },
+      { view: 'map', label: 'Hospital Map', icon: <MapIcon /> },
+      { view: 'financials', label: 'Financials', icon: <DollarIcon /> },
+    ],
+    diagnostics: [
+      { view: 'symptom-checker', label: 'AI Symptom Checker', icon: <HeartIcon /> },
+      { view: 'laboratory', label: 'Laboratory', icon: <LabIcon /> },
+      { view: 'pharmacy', label: 'Pharmacy', icon: <PharmacyIcon /> },
+    ],
+    advanced: [
+      { view: 'genomics', label: 'Genomics', icon: <DnaIcon /> },
+      { view: 'clinical-trials', label: 'Clinical Trials', icon: <ClipboardIcon /> },
+    ],
+    patientFocus: [
+        { view: 'patient-portal', label: 'Patient Portal', icon: <UserCircleIcon /> },
+    ]
+  };
 
   return (
-    <aside className="w-64 bg-white dark:bg-gray-800 p-4 flex flex-col shadow-lg border-r dark:border-gray-700">
-        <div className="flex items-center mb-8">
-            <div className="p-2 bg-blue-600 rounded-lg">
-                <svg className="w-8 h-8 text-white" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5-10-5-10 5z"></path></svg>
-            </div>
-            <h1 className="ml-3 text-xl font-bold text-gray-800 dark:text-white">HealthSys</h1>
+    <aside className="w-64 bg-white dark:bg-gray-800 shadow-md flex-shrink-0 flex flex-col p-4 border-r dark:border-gray-700">
+      <div className="flex items-center mb-8 px-2">
+        <div className="p-2 bg-blue-600 rounded-lg">
+           <HeartIcon className="w-6 h-6 text-white"/>
         </div>
-
-      <nav className="flex-1 space-y-2">
-        {adminLinks.map(link => (
-          <NavLink key={link.view} {...link} currentView={currentView} navigate={navigate} />
-        ))}
-        <div className="pt-4 mt-4 border-t border-gray-200 dark:border-gray-700">
-            <h3 className="px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Tools</h3>
-            {toolLinks.map(link => (
-                <NavLink key={link.view} {...link} currentView={currentView} navigate={navigate} />
-            ))}
-        </div>
-         <div className="pt-4 mt-4 border-t border-gray-200 dark:border-gray-700">
-            <h3 className="px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Patient View</h3>
-            {patientLinks.map(link => (
-                <NavLink key={link.view} {...link} currentView={currentView} navigate={navigate} />
-            ))}
-        </div>
-      </nav>
-
-      <div className="mt-auto">
-        {/* User Profile Section */}
+        <h1 className="text-xl font-bold ml-3 text-gray-800 dark:text-white">HealthSys AI</h1>
       </div>
+      
+      <nav className="flex-1 space-y-6 overflow-y-auto">
+        <NavSection title="Clinical">
+            {navItems.clinical.map(item => (
+                <NavLink key={item.view} label={item.label} icon={item.icon} isActive={currentView === item.view} onClick={() => navigate(item.view)} />
+            ))}
+        </NavSection>
+         <NavSection title="Administrative">
+            {navItems.administrative.map(item => (
+                <NavLink key={item.view} label={item.label} icon={item.icon} isActive={currentView === item.view} onClick={() => navigate(item.view)} />
+            ))}
+        </NavSection>
+        <NavSection title="Diagnostics">
+            {navItems.diagnostics.map(item => (
+                <NavLink key={item.view} label={item.label} icon={item.icon} isActive={currentView === item.view} onClick={() => navigate(item.view)} />
+            ))}
+        </NavSection>
+         <NavSection title="Advanced">
+            {navItems.advanced.map(item => (
+                <NavLink key={item.view} label={item.label} icon={item.icon} isActive={currentView === item.view} onClick={() => navigate(item.view)} />
+            ))}
+        </NavSection>
+        <NavSection title="Patient Focus">
+            {navItems.patientFocus.map(item => (
+                <NavLink key={item.view} label={item.label} icon={item.icon} isActive={currentView === item.view} onClick={() => navigate(item.view)} />
+            ))}
+        </NavSection>
+      </nav>
     </aside>
   );
 };
